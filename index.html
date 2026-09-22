@@ -6,6 +6,9 @@
     <title>Aperturas de Tanquillas de CANTV</title>
     <!-- Incluir Chart.js para el gráfico de pastel -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Librerías para generación de Reportes en PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root {
             --primary-color: #1a73e8;
@@ -34,6 +37,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         h1 {
@@ -42,6 +53,35 @@
             margin: 0;
             font-weight: 700;
             letter-spacing: 0.5px;
+        }
+
+        /* Botón de Generar Reporte PDF */
+        .btn-pdf {
+            background-color: #059669;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-pdf:hover {
+            background-color: #047857;
+            transform: translateY(-1px);
+        }
+
+        .btn-pdf:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Tarjeta específica para el Panel de Filtros */
@@ -408,7 +448,10 @@
 <div class="container">
     <div class="header-flex">
         <h1>APERTURAS DE TANQUILLAS DE CANTV</h1>
-        <div id="statusBadge" class="status-badge">Conectando...</div>
+        <div class="header-actions">
+            <button id="btnGenerarPDF" class="btn-pdf" onclick="generarReportePDF()">📄 Generar Reporte</button>
+            <div id="statusBadge" class="status-badge">Conectando...</div>
+        </div>
     </div>
 
     <!-- ZONA DE FILTROS DISTINTIVA -->
@@ -420,13 +463,13 @@
 
         <div class="filters-container" id="filtersPanel">
             
-            <!-- NUEVO: Buscador en vivo de N° Correlativo -->
+            <!-- Buscador en vivo de N° Correlativo -->
             <div class="filter-group">
                 <label>Buscador N°</label>
                 <input type="text" id="filterSearch" placeholder="Ej: V142050" oninput="aplicarFiltros()">
             </div>
 
-            <!-- NUEVO: Rango de Fechas -->
+            <!-- Rango de Fechas -->
             <div class="filter-group">
                 <label>Fecha Desde</label>
                 <input type="date" id="filterDateFrom" onchange="aplicarFiltros()">
@@ -556,6 +599,7 @@
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxC_wbmYVLrYLNdRjnILtJINVyZhIQVHXT5XRSYosKJLZKNWNBP7Mdr8bZfUviACKNK/exec";
     let globalData = [];
+    let registrosVisibles = []; // Mantiene la referencia exacta a las filas filtradas
     let myChart = null;
 
     function toggleFiltros() {
@@ -592,7 +636,7 @@
         // La columna de Proyectos ahora es la O debido al desplazamiento
         const uniqueO = [...new Set(globalData.map(item => item["O"]))].filter(val => val !== "").sort();
 
-        // Carga ultra-rápida de Selects
+        // Carga de Selects
         let aHTML = '<option value="">Todos</option>';
         uniqueA.forEach(val => aHTML += `<option value="${val}">${val}</option>`);
         selectA.innerHTML = aHTML;
@@ -642,12 +686,11 @@
         }
     }
 
-    // Función auxiliar para transformar "DD/MM/YYYY" a un valor comparable en tiempo real
+    // Función auxiliar para transformar "DD/MM/YYYY" a timestamp comparable
     function parseSheetDate(dateStr) {
         if (!dateStr) return null;
-        const parts = dateStr.split('/');
+        const parts = String(dateStr).trim().split('/');
         if (parts.length === 3) {
-            // Convierte DD/MM/YYYY a objeto Date local
             return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
         }
         return null;
@@ -659,16 +702,16 @@
         const valDateFrom = document.getElementById('filterDateFrom').value;
         const valDateTo = document.getElementById('filterDateTo').value;
 
-        // Convertir las fechas seleccionadas en inputs (YYYY-MM-DD) a tiempo local
+        // Fechas a tiempo local
         let timeFrom = valDateFrom ? new Date(valDateFrom + "T00:00:00").getTime() : null;
         let timeTo = valDateTo ? new Date(valDateTo + "T23:59:59").getTime() : null;
 
-        // Variables de Selects Tradicionales
+        // Selects
         const valA = document.getElementById('filterA').value;
         const valB = document.getElementById('filterB').value;
         const valF = document.getElementById('filterF').value;
 
-        // Variables de Múltiple Selección
+        // Selección múltiple
         const deptosSeleccionados = Array.from(document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]:checked')).map(cb => cb.value);
         const totalDeptos = document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]').length;
         const deptoText = document.getElementById('deptoBtnText');
@@ -698,10 +741,8 @@
 
         // Filtrado masivo en memoria
         const registrosFiltrados = globalData.filter(row => {
-            // Buscador en Tiempo Real por la columna C (N° / Correlativo)
-            const matchSearch = valSearch === "" || (row["C"] && row["C"].toLowerCase().includes(valSearch));
+            const matchSearch = valSearch === "" || (row["C"] && String(row["C"]).toLowerCase().includes(valSearch));
 
-            // Filtro por Fechas de la Columna D
             let matchDate = true;
             if (timeFrom || timeTo) {
                 const rowTime = parseSheetDate(row["D"]);
@@ -709,18 +750,15 @@
                     if (timeFrom && rowTime < timeFrom) matchDate = false;
                     if (timeTo && rowTime > timeTo) matchDate = false;
                 } else {
-                    // Si el usuario filtra por fecha y la fila no tiene una fecha válida, se oculta
                     matchDate = false;
                 }
             }
 
-            // Filtros de Select y Checkbox
             const matchA = valA === "" || row["A"] === valA;
             const matchB = valB === "" || row["B"] === valB;
             const matchF = valF === "" || row["F"] === valF;
             
             const deptoVal = (row["G"] && row["G"].trim() !== "") ? row["G"].trim() : "Sin Departamento";
-            // El Proyecto ahora se valida desde la columna O
             const projVal = row["O"] || "";
 
             const matchG = deptosSeleccionados.length === totalDeptos || deptosSeleccionados.length === 0 || deptosSeleccionados.includes(deptoVal);
@@ -729,12 +767,15 @@
             return matchSearch && matchDate && matchA && matchB && matchF && matchG && matchO;
         });
 
-        // Ordenar cronológicamente por fecha (Columna D)
+        // Ordenamiento cronológico por fecha (Columna D)
         registrosFiltrados.sort((a, b) => {
             const timeA = parseSheetDate(a["D"]) || 0;
             const timeB = parseSheetDate(b["D"]) || 0;
-            return timeA - timeB; // Cambiar a (timeB - timeA) si se desea de más reciente a más antiguo
+            return timeA - timeB;
         });
+
+        // Actualizar referencia global para el exportador PDF
+        registrosVisibles = registrosFiltrados;
 
         if (registrosFiltrados.length === 0) {
             tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: #777; padding:20px;">No se encontraron registros.</td></tr>`;
@@ -743,11 +784,10 @@
             return;
         }
 
-        // Renderizado hiper-rápido en 1 solo movimiento para evitar lag en el navegador
+        // Renderizado eficiente en tabla
         tbody.innerHTML = registrosFiltrados.map(row => {
             const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#e11d48; font-weight:bold;">Sin Departamento</span>';
             
-            // Asignación de badges visuales para la columna PLANILLAS
             const planillaTxt = (row["I"] || "").trim().toUpperCase();
             let planillaBadge = planillaTxt;
             if (planillaTxt === "SI" || planillaTxt === "SÍ") {
@@ -763,9 +803,9 @@
                     <td>${row["F"] || ''}</td>
                     <td>${deptoDisplay}</td>
                     <td>${row["H"] || ''}</td>
-                    <td style="text-align: center;">${planillaBadge}</td> <!-- NUEVA COLUMNA PLANILLAS (I) -->
-                    <td>${row["O"] || ''}</td> <!-- PROYECTO (Ahora en O) -->
-                    <td class="obs-col">${row["N"] || ''}</td> <!-- OBSERVACIONES (Ahora en N) -->
+                    <td style="text-align: center;">${planillaBadge}</td>
+                    <td>${row["O"] || ''}</td>
+                    <td class="obs-col">${row["N"] || ''}</td>
                     <td><b>${row["APROBACION"] || ''}</b></td>
                     <td><b>${row["RESULTADO"] || ''}</b></td>
                 </tr>
@@ -859,6 +899,91 @@
                 }
             }
         });
+    }
+
+    // Función para exportar la tabla activa a formato PDF
+    function generarReportePDF() {
+        if (!registrosVisibles || registrosVisibles.length === 0) {
+            alert("No hay registros en la vista para generar el reporte.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        // Orientación apaisada (landscape) para formato de tabla amplia
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+
+        // Título del reporte
+        doc.setFontSize(16);
+        doc.setTextColor(26, 115, 232);
+        doc.text("APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
+
+        // Subtítulo con fecha y resumen
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        const hoy = new Date().toLocaleDateString('es-ES', { 
+            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+        });
+        const total = registrosVisibles.length;
+        const inst = document.getElementById('valInstalacion').innerText;
+        const mant = document.getElementById('valMantenimiento').innerText;
+
+        doc.text(`Generado el: ${hoy} | Total Registros: ${total} | Instalación: ${inst} | Mantenimiento: ${mant}`, 40, 58);
+
+        // Preparación de filas para jsPDF autoTable
+        const tableBody = registrosVisibles.map(row => [
+            row["C"] || "",
+            row["D"] || "",
+            row["F"] || "",
+            (row["G"] && row["G"].trim() !== "") ? row["G"] : "Sin Depto",
+            row["H"] || "",
+            (row["I"] || "").toUpperCase(),
+            row["O"] || "",
+            row["N"] || "",
+            row["APROBACION"] || "",
+            row["RESULTADO"] || ""
+        ]);
+
+        doc.autoTable({
+            startY: 70,
+            head: [['N°', 'FECHA', 'ACTIVIDAD', 'DEPTO', 'SLA', 'PLANILLA', 'PROYECTO', 'OBSERVACIONES', 'APROB.', 'RESULTADO']],
+            body: tableBody,
+            theme: 'striped',
+            styles: {
+                fontSize: 7.5,
+                cellPadding: 4,
+                overflow: 'linebreak',
+                valign: 'middle'
+            },
+            headStyles: {
+                fillColor: [26, 115, 232],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'left'
+            },
+            columnStyles: {
+                0: { cellWidth: 50, fontStyle: 'bold' },
+                1: { cellWidth: 55 },
+                2: { cellWidth: 75 },
+                3: { cellWidth: 80 },
+                4: { cellWidth: 40 },
+                5: { cellWidth: 50, halign: 'center' },
+                6: { cellWidth: 75 },
+                7: { cellWidth: 180 }, // Observaciones con espacio amplio
+                8: { cellWidth: 65, fontStyle: 'bold' },
+                9: { cellWidth: 65, fontStyle: 'bold' }
+            },
+            margin: { left: 40, right: 40 },
+            didDrawPage: function(data) {
+                // Pie de página con numeración
+                const str = `Página ${doc.internal.getNumberOfPages()}`;
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text(str, doc.internal.pageSize.width - 40 - doc.getTextWidth(str), doc.internal.pageSize.height - 20);
+            }
+        });
+
+        // Descargar PDF generado
+        doc.save(`Reporte_Aperturas_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 
     function cargarDatos() {
