@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,6 +18,9 @@
             --text-color: #2c3e50;
             --border-color: #dcdcdc;
             --filter-bg: #f8fafc;
+            --table-header-bg: #6ca0dc;
+            --table-row-alt1: #e9f2fb;
+            --table-row-alt2: #f4f8fc;
         }
 
         body {
@@ -55,7 +59,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Botón de Generar Reporte PDF */
         .btn-pdf {
             background-color: #059669;
             color: #ffffff;
@@ -78,13 +81,6 @@
             transform: translateY(-1px);
         }
 
-        .btn-pdf:disabled {
-            background-color: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Tarjeta específica para el Panel de Filtros */
         .filter-card {
             background-color: var(--filter-bg);
             border: 2px solid #cbd5e1;
@@ -124,10 +120,6 @@
             transition: background 0.2s;
         }
 
-        .toggle-btn:hover {
-            background: #1558b0;
-        }
-
         .filters-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -154,7 +146,6 @@
             color: #475569;
         }
 
-        /* Ajustes para que inputs y selects tengan el mismo estilo */
         .filters-container select,
         .filters-container input[type="text"],
         .filters-container input[type="date"] {
@@ -169,17 +160,11 @@
             font-family: inherit;
         }
 
-        .filters-container select {
-            cursor: pointer;
-        }
-
-        /* Input de búsqueda resaltado sutilmente */
-        #filterSearch {
-            border-color: var(--primary-color);
+        .filter-search-input {
+            border-color: var(--primary-color) !important;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* Dropdowns de selección múltiple */
         .dropdown-multiselect {
             position: relative;
             background-color: white;
@@ -251,12 +236,6 @@
             padding: 2px 4px;
         }
 
-        .dropdown-actions button:hover {
-            text-decoration: underline;
-            background: #f1f5f9;
-            border-radius: 3px;
-        }
-
         .dropdown-item {
             padding: 6px 8px;
             display: flex;
@@ -267,12 +246,6 @@
             color: #334155;
         }
 
-        .dropdown-item:hover {
-            background-color: #f1f5f9;
-            border-radius: 4px;
-        }
-
-        /* Tarjeta de la Tabla */
         .card {
             background-color: var(--card-bg);
             padding: 18px;
@@ -304,6 +277,25 @@
             white-space: nowrap;
         }
 
+        /* Ajustes específicos para Tabla de Resultados (Panel 2) */
+        #tablaResultados {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        #tablaResultados th:nth-child(1) { width: 14%; } 
+        #tablaResultados th:nth-child(2) { width: 28%; } 
+        #tablaResultados th:nth-child(3) { width: 14%; } 
+        #tablaResultados th:nth-child(4) { width: 12%; } 
+        #tablaResultados th:nth-child(5) { width: 10%; } 
+        #tablaResultados th:nth-child(6) { width: 10%; } 
+        #tablaResultados th:nth-child(7) { width: 12%; } 
+
+        #tablaResultados td {
+            white-space: normal; 
+            word-wrap: break-word;
+        }
+
         td.obs-col {
             white-space: normal;
             max-width: 280px;
@@ -331,7 +323,6 @@
             font-size: 13px;
         }
 
-        /* Estilos dinámicos para Planillas */
         .badge-si {
             background-color: #dcfce7;
             color: #166534;
@@ -339,6 +330,7 @@
             border-radius: 4px;
             font-weight: 700;
             font-size: 11px;
+            display: inline-block;
         }
 
         .badge-no {
@@ -348,9 +340,19 @@
             border-radius: 4px;
             font-weight: 700;
             font-size: 11px;
+            display: inline-block;
         }
 
-        /* Sección de Información Adicional y Gráfico */
+        .badge-neutral {
+            background-color: #f1f5f9; 
+            color: #334155;
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-size: 11px; 
+            font-weight: 700;
+            display: inline-block;
+        }
+
         .analytics-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -372,7 +374,6 @@
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
         }
 
         .analytics-card h3 {
@@ -381,7 +382,14 @@
             color: #1e293b;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 8px;
+            margin-bottom: 5px;
+        }
+
+        .date-subtitle {
+            font-size: 12px;
+            color: #64748b;
             margin-bottom: 15px;
+            font-style: italic;
         }
 
         .metrics-grid {
@@ -403,26 +411,11 @@
             align-items: center;
         }
 
-        .metric-box.mantenimiento {
-            border-left-color: #10b981;
-        }
+        .metric-box.mantenimiento { border-left-color: #10b981; }
+        .metric-box.total { border-left-color: #8b5cf6; background: #f5f3ff; }
 
-        .metric-box.total {
-            border-left-color: #8b5cf6;
-            background: #f5f3ff;
-        }
-
-        .metric-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #475569;
-        }
-
-        .metric-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-        }
+        .metric-label { font-size: 13px; font-weight: 600; color: #475569; }
+        .metric-value { font-size: 18px; font-weight: 700; color: #1e293b; }
 
         .chart-wrapper {
             position: relative;
@@ -430,6 +423,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-grow: 1;
         }
 
         .status-badge {
@@ -441,35 +435,94 @@
             font-weight: 600;
             border: 1px solid #c8e6c9;
         }
+
+        .dashboard-separator {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-top: 2px dashed #cbd5e1;
+        }
+
+        /* ESTILOS PARA LA NUEVA TABLA DE RESUMEN (PANEL 2) */
+        .summary-wrapper {
+            max-width: 450px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            background-color: white;
+        }
+
+        .summary-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-wrapper th {
+            background-color: var(--table-header-bg);
+            color: white;
+            font-size: 14px;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .summary-wrapper th div {
+            font-size: 11px;
+            font-weight: normal;
+            margin-top: 4px;
+            color: #e2e8f0;
+        }
+
+        .summary-wrapper td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #dcdcdc;
+            font-size: 13px;
+            color: #2c3e50;
+        }
+
+        .summary-wrapper td:nth-child(2) {
+            text-align: center;
+            font-weight: bold;
+            width: 60px;
+            border-left: 1px solid #dcdcdc;
+        }
+
+        .summary-wrapper tbody tr:nth-child(odd) { background-color: var(--table-row-alt1); }
+        .summary-wrapper tbody tr:nth-child(even) { background-color: var(--table-row-alt2); }
+
+        .row-bold td {
+            font-weight: 800;
+            color: #0f172a;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- ============================================== -->
+    <!-- PANEL PRINCIPAL ORIGINAL                       -->
+    <!-- ============================================== -->
     <div class="header-flex">
         <h1>APERTURAS DE TANQUILLAS DE CANTV</h1>
         <div class="header-actions">
-            <button id="btnGenerarPDF" class="btn-pdf" onclick="generarReportePDF()">📄 Generar Reporte</button>
+            <button id="btnGenerarPDF1" class="btn-pdf" onclick="generarReportePDF1()">📄 Generar Reporte</button>
             <div id="statusBadge" class="status-badge">Conectando...</div>
         </div>
     </div>
 
-    <!-- ZONA DE FILTROS DISTINTIVA -->
     <div class="filter-card">
         <div class="filters-header">
             <span>🔍 Panel de Control y Filtros Operativos</span>
-            <button id="toggleFiltersBtn" class="toggle-btn" onclick="toggleFiltros()">-</button>
+            <button id="toggleFiltersBtn" class="toggle-btn" onclick="toggleFiltros('filtersPanel', 'toggleFiltersBtn')">-</button>
         </div>
 
         <div class="filters-container" id="filtersPanel">
-            
-            <!-- Buscador en vivo de N° Correlativo -->
             <div class="filter-group">
                 <label>Buscador N°</label>
-                <input type="text" id="filterSearch" placeholder="Ej: V142050" oninput="aplicarFiltros()">
+                <input type="text" id="filterSearch" class="filter-search-input" placeholder="Ej: V142050" oninput="aplicarFiltros()">
             </div>
 
-            <!-- Rango de Fechas -->
             <div class="filter-group">
                 <label>Fecha Desde</label>
                 <input type="date" id="filterDateFrom" onchange="aplicarFiltros()">
@@ -479,7 +532,6 @@
                 <input type="date" id="filterDateTo" onchange="aplicarFiltros()">
             </div>
 
-            <!-- Filtros Originales -->
             <div class="filter-group">
                 <label>Actividad</label>
                 <select id="filterF" onchange="aplicarFiltros()">
@@ -487,21 +539,21 @@
                 </select>
             </div>
             
-            <div class="filter-group">
+            <!-- Selects Columna A y B ocultos lógicamente -->
+            <div class="filter-group" style="display:none;">
                 <label>Columna A</label>
                 <select id="filterA" onchange="aplicarFiltros()">
                     <option value="">Todos</option>
                 </select>
             </div>
             
-            <div class="filter-group">
+            <div class="filter-group" style="display:none;">
                 <label>Columna B</label>
                 <select id="filterB" onchange="aplicarFiltros()">
                     <option value="">Todos</option>
                 </select>
             </div>
 
-            <!-- Filtro Múltiple: Departamento -->
             <div class="filter-group">
                 <label>Departamento</label>
                 <div class="dropdown-multiselect" id="dropdownDepto">
@@ -510,15 +562,14 @@
                     </div>
                     <div class="dropdown-content" id="dropdownDeptoContent">
                         <div class="dropdown-actions">
-                            <button type="button" onclick="marcarTodos('dropdownDeptoContent', true)">Seleccionar Todos</button>
-                            <button type="button" onclick="marcarTodos('dropdownDeptoContent', false)">Deseleccionar Todos</button>
+                            <button type="button" onclick="marcarTodos('dropdownDeptoContent', true); aplicarFiltros();">Seleccionar Todos</button>
+                            <button type="button" onclick="marcarTodos('dropdownDeptoContent', false); aplicarFiltros();">Deseleccionar Todos</button>
                         </div>
                         <div id="deptoItemsContainer"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Filtro Múltiple: Proyecto -->
             <div class="filter-group">
                 <label>Proyecto</label>
                 <div class="dropdown-multiselect" id="dropdownProj">
@@ -527,8 +578,8 @@
                     </div>
                     <div class="dropdown-content" id="dropdownProjContent">
                         <div class="dropdown-actions">
-                            <button type="button" onclick="marcarTodos('dropdownProjContent', true)">Seleccionar Todos</button>
-                            <button type="button" onclick="marcarTodos('dropdownProjContent', false)">Deseleccionar Todos</button>
+                            <button type="button" onclick="marcarTodos('dropdownProjContent', true); aplicarFiltros();">Seleccionar Todos</button>
+                            <button type="button" onclick="marcarTodos('dropdownProjContent', false); aplicarFiltros();">Deseleccionar Todos</button>
                         </div>
                         <div id="projItemsContainer"></div>
                     </div>
@@ -538,7 +589,6 @@
         </div>
     </div>
 
-    <!-- TARJETA DE LA TABLA -->
     <div class="card">
         <div class="table-responsive">
             <table>
@@ -565,11 +615,10 @@
         </div>
     </div>
 
-    <!-- ZONA DE INFORMACIÓN ADICIONAL Y GRÁFICO DE PASTEL -->
     <div class="analytics-container">
-        <!-- Izquierda: Totales por tipo de Actividad -->
         <div class="analytics-card">
             <h3>📊 Resumen de Aperturas Filtradas</h3>
+            <div class="date-subtitle" id="dateSubtitlePanel1">(Historico completo)</div>
             <div class="metrics-grid">
                 <div class="metric-box">
                     <span class="metric-label">Total por Instalación</span>
@@ -586,7 +635,6 @@
             </div>
         </div>
 
-        <!-- Derecha: Gráfico de Pastel por Departamentos con Leyenda Ampliada -->
         <div class="analytics-card">
             <h3>Distribución Porcentual por Departamento</h3>
             <div class="chart-wrapper">
@@ -594,17 +642,124 @@
             </div>
         </div>
     </div>
+
+    <div class="dashboard-separator"></div>
+
+    <!-- ============================================== -->
+    <!-- SEGUNDO PANEL: RESULTADO DE APERTURAS          -->
+    <!-- ============================================== -->
+    <div class="header-flex">
+        <h1>RESULTADO DE APERTURAS DE TANQUILLAS DE CANTV</h1>
+        <div class="header-actions">
+            <!-- Botón agregado al Panel 2 -->
+            <button id="btnGenerarPDF2" class="btn-pdf" onclick="generarReportePDF2()">📄 Generar Reporte</button>
+            <div id="statusBadgeResultados" class="status-badge">Conectando...</div>
+        </div>
+    </div>
+
+    <div class="filter-card">
+        <div class="filters-header">
+            <span>🔍 Filtros de Resultados</span>
+            <button id="toggleFiltersResBtn" class="toggle-btn" onclick="toggleFiltros('filtersPanelRes', 'toggleFiltersResBtn')">-</button>
+        </div>
+
+        <div class="filters-container" id="filtersPanelRes">
+            <div class="filter-group">
+                <label>Abonado</label>
+                <input type="text" id="filterAbonadoRes" class="filter-search-input" placeholder="Buscar abonado..." oninput="aplicarFiltrosResultados()">
+            </div>
+
+            <div class="filter-group">
+                <label>Enviado Desde</label>
+                <input type="date" id="filterDateFromRes" onchange="aplicarFiltrosResultados()">
+            </div>
+            <div class="filter-group">
+                <label>Enviado Hasta</label>
+                <input type="date" id="filterDateToRes" onchange="aplicarFiltrosResultados()">
+            </div>
+
+            <div class="filter-group">
+                <label>Actividad</label>
+                <select id="filterActividadRes" onchange="aplicarFiltrosResultados()">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Aprobación</label>
+                <select id="filterAprobacionRes" onchange="aplicarFiltrosResultados()">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Resultado</label>
+                <select id="filterResultadoRes" onchange="aplicarFiltrosResultados()">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table id="tablaResultados">
+                <thead>
+                    <tr>
+                        <th>ABONADO</th>
+                        <th>PROYECTO</th>
+                        <th>ACTIVIDAD</th>
+                        <th>FECHA DE ENVÍO</th>
+                        <th>APROBACIÓN</th>
+                        <th>RESULTADO</th>
+                        <th>OBSERVACIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBodyResultados">
+                    <tr>
+                        <td colspan="7" class="loading">Cargando datos de Resultados...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="summary-wrapper" id="resumenResultados">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        Solicitudes de Aperturas por CANTV
+                        <div id="dateSubtitlePanel2">(Historico completo)</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row-bold"><td>Total solicitudes enviadas</td><td id="resTotEnviadas">0</td></tr>
+                <tr><td>Solicitudes aprobadas</td><td id="resTotAprobadas">0</td></tr>
+                <tr><td>Solicitudes rechazadas</td><td id="resTotRechazadas">0</td></tr>
+                <tr><td>Solicitudes sin respuesta</td><td id="resTotSinResp">0</td></tr>
+                <tr class="row-bold"><td>Total Solicitudes Exitosas</td><td id="resExitoTotal">0</td></tr>
+                <tr><td>Total Solicitudes Fracasadas / Fallidas</td><td id="resFracTotal">0</td></tr>
+                <tr class="row-bold"><td>Mantenimientos exitosos</td><td id="resExitoMant">0</td></tr>
+                <tr><td>Mantenimientos fallidos</td><td id="resFracMant">0</td></tr>
+                <tr class="row-bold"><td>Instalaciones exitosas</td><td id="resExitoInst">0</td></tr>
+                <tr><td>Instalaciones fallidas</td><td id="resFracInst">0</td></tr>
+                <tr class="row-bold"><td>Verticales exitosas</td><td id="resExitoVert">0</td></tr>
+                <tr><td>Verticales fallidas</td><td id="resFracVert">0</td></tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxC_wbmYVLrYLNdRjnILtJINVyZhIQVHXT5XRSYosKJLZKNWNBP7Mdr8bZfUviACKNK/exec";
-    let globalData = [];
-    let registrosVisibles = []; // Mantiene la referencia exacta a las filas filtradas
-    let myChart = null;
-
-    function toggleFiltros() {
-        const panel = document.getElementById('filtersPanel');
-        const btn = document.getElementById('toggleFiltersBtn');
+    // ==============================================================
+    // FUNCIONES GLOBALES / COMPARTIDAS
+    // ==============================================================
+    function toggleFiltros(panelId, btnId) {
+        const panel = document.getElementById(panelId);
+        const btn = document.getElementById(btnId);
         panel.classList.toggle('collapsed');
         if (panel.classList.contains('collapsed')) {
             btn.innerText = "+";
@@ -613,10 +768,113 @@
         }
     }
 
-    function procesarDatosSheet(data) {
-        globalData = data;
-        popularFiltros();
-        aplicarFiltros();
+    function toggleDropdown(contentId) {
+        const content = document.getElementById(contentId);
+        document.querySelectorAll('.dropdown-content').forEach(el => {
+            if (el.id !== contentId) el.classList.remove('show');
+        });
+        content.classList.toggle('show');
+    }
+
+    function marcarTodos(containerId, marcar) {
+        const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]`);
+        checkboxes.forEach(cb => cb.checked = marcar);
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.dropdown-multiselect') && !event.target.closest('.dropdown-actions')) {
+            document.querySelectorAll('.dropdown-content').forEach(el => el.classList.remove('show'));
+        }
+    }
+
+    function parseSheetDate(dateStr) {
+        if (!dateStr) return null;
+        const parts = String(dateStr).trim().split('/');
+        if (parts.length === 3) {
+            return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+        }
+        return null;
+    }
+
+    function formatGvizValue(cells, index) {
+        if (!cells || !cells[index]) return "";
+        const cell = cells[index];
+        if (cell.f) return cell.f; 
+        if (cell.v !== null && cell.v !== undefined) return String(cell.v).trim();
+        return "";
+    }
+
+    function formatDateForSubtitle(dateStr) {
+        if(!dateStr) return "";
+        const parts = dateStr.split('-');
+        if(parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        return dateStr;
+    }
+
+    // ==============================================================
+    // LOGICA PANEL 1
+    // ==============================================================
+    let globalData = [];
+    let registrosVisibles = []; 
+    let myChart = null;
+
+    function cargarDatosPanel1() {
+        const sheetId = '1xQfFyNb0zihdNq8luRxhDFe2WNVCTGzI2_wDuAEAL-o';
+        const sheetName = 'BD-Abonados 13-02-2025'; 
+        
+        const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:procesarDatosPanel1Gviz&sheet=${encodeURIComponent(sheetName)}`;
+
+        const script = document.createElement('script');
+        script.src = gvizUrl;
+        script.onerror = function() {
+            document.getElementById('tableBody').innerHTML = `<tr><td colspan="10" style="text-align: center; color: #d9534f; padding:20px;">Error de conexión de red (Panel 1).</td></tr>`;
+            document.getElementById('statusBadge').innerText = "Error de red";
+        };
+        document.body.appendChild(script);
+    }
+
+    function procesarDatosPanel1Gviz(data) {
+        if (data && data.table && data.table.rows) {
+            globalData = [];
+            
+            let indexAprob = -1, indexRes = -1;
+            if (data.table.rows.length > 0) {
+                const headCells = data.table.rows[0].c;
+                if(headCells) {
+                    headCells.forEach((c, i) => {
+                        if(c && c.v) {
+                            let val = String(c.v).toUpperCase();
+                            if(val.includes("APROBACI")) indexAprob = i;
+                            if(val.includes("RESULTADO")) indexRes = i;
+                        }
+                    });
+                }
+            }
+
+            const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            
+            data.table.rows.forEach((row, index) => {
+                if (index === 0) return; 
+                const cells = row.c;
+                if(!cells) return;
+
+                let obj = {};
+                for(let i = 0; i < 26; i++) {
+                    obj[letters[i]] = formatGvizValue(cells, i);
+                }
+
+                obj["APROBACION"] = indexAprob !== -1 ? formatGvizValue(cells, indexAprob) : (obj["P"] || "");
+                obj["RESULTADO"] = indexRes !== -1 ? formatGvizValue(cells, indexRes) : (obj["Q"] || "");
+
+                globalData.push(obj);
+            });
+
+            popularFiltros();
+            aplicarFiltros();
+        } else {
+            document.getElementById('tableBody').innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px;">No se encontraron datos.</td></tr>';
+            document.getElementById('statusBadge').innerText = "Sin datos";
+        }
     }
 
     function popularFiltros() {
@@ -630,13 +888,9 @@
         const uniqueB = [...new Set(globalData.map(item => item["B"]))].filter(val => val !== "").sort();
         const uniqueF = [...new Set(globalData.map(item => item["F"]))].filter(val => val !== "").sort();
         
-        // Manejar "Sin Departamento"
         const uniqueG = [...new Set(globalData.map(item => (item["G"] && item["G"].trim() !== "") ? item["G"].trim() : "Sin Departamento"))].sort();
-        
-        // La columna de Proyectos ahora es la O debido al desplazamiento
         const uniqueO = [...new Set(globalData.map(item => item["O"]))].filter(val => val !== "").sort();
 
-        // Carga de Selects
         let aHTML = '<option value="">Todos</option>';
         uniqueA.forEach(val => aHTML += `<option value="${val}">${val}</option>`);
         selectA.innerHTML = aHTML;
@@ -660,58 +914,32 @@
                 <input type="checkbox" value="${val}" checked onchange="aplicarFiltros()"> ${val}
             </label>
         `).join('');
-
-        if (uniqueA.includes("1")) selectA.value = "1";
-        if (uniqueB.includes("Si")) selectB.value = "Si";
-        else if (uniqueB.includes("Sí")) selectB.value = "Sí";
-    }
-
-    function toggleDropdown(contentId) {
-        const content = document.getElementById(contentId);
-        document.querySelectorAll('.dropdown-content').forEach(el => {
-            if (el.id !== contentId) el.classList.remove('show');
-        });
-        content.classList.toggle('show');
-    }
-
-    function marcarTodos(containerId, marcar) {
-        const checkboxes = document.querySelectorAll(`#${containerId} input[type="checkbox"]`);
-        checkboxes.forEach(cb => cb.checked = marcar);
-        aplicarFiltros();
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.closest('.dropdown-multiselect') && !event.target.closest('.dropdown-actions')) {
-            document.querySelectorAll('.dropdown-content').forEach(el => el.classList.remove('show'));
-        }
-    }
-
-    // Función auxiliar para transformar "DD/MM/YYYY" a timestamp comparable
-    function parseSheetDate(dateStr) {
-        if (!dateStr) return null;
-        const parts = String(dateStr).trim().split('/');
-        if (parts.length === 3) {
-            return new Date(parts[2], parts[1] - 1, parts[0]).getTime();
-        }
-        return null;
     }
 
     function aplicarFiltros() {
-        // Variables de Textbox y Fechas
         const valSearch = document.getElementById('filterSearch').value.toLowerCase().trim();
         const valDateFrom = document.getElementById('filterDateFrom').value;
         const valDateTo = document.getElementById('filterDateTo').value;
 
-        // Fechas a tiempo local
+        // Actualizar subtitulo
+        const subt = document.getElementById('dateSubtitlePanel1');
+        if (valDateFrom && valDateTo) {
+            subt.innerText = `(Del ${formatDateForSubtitle(valDateFrom)} al ${formatDateForSubtitle(valDateTo)})`;
+        } else if (valDateFrom) {
+            subt.innerText = `(Desde el ${formatDateForSubtitle(valDateFrom)})`;
+        } else if (valDateTo) {
+            subt.innerText = `(Hasta el ${formatDateForSubtitle(valDateTo)})`;
+        } else {
+            subt.innerText = "(Historico completo)";
+        }
+
         let timeFrom = valDateFrom ? new Date(valDateFrom + "T00:00:00").getTime() : null;
         let timeTo = valDateTo ? new Date(valDateTo + "T23:59:59").getTime() : null;
 
-        // Selects
         const valA = document.getElementById('filterA').value;
         const valB = document.getElementById('filterB').value;
         const valF = document.getElementById('filterF').value;
 
-        // Selección múltiple
         const deptosSeleccionados = Array.from(document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]:checked')).map(cb => cb.value);
         const totalDeptos = document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]').length;
         const deptoText = document.getElementById('deptoBtnText');
@@ -739,7 +967,6 @@
         const tbody = document.getElementById('tableBody');
         const badge = document.getElementById('statusBadge');
 
-        // Filtrado masivo en memoria
         const registrosFiltrados = globalData.filter(row => {
             const matchSearch = valSearch === "" || (row["C"] && String(row["C"]).toLowerCase().includes(valSearch));
 
@@ -767,14 +994,12 @@
             return matchSearch && matchDate && matchA && matchB && matchF && matchG && matchO;
         });
 
-        // Ordenamiento cronológico por fecha (Columna D)
         registrosFiltrados.sort((a, b) => {
             const timeA = parseSheetDate(a["D"]) || 0;
             const timeB = parseSheetDate(b["D"]) || 0;
             return timeA - timeB;
         });
 
-        // Actualizar referencia global para el exportador PDF
         registrosVisibles = registrosFiltrados;
 
         if (registrosFiltrados.length === 0) {
@@ -784,7 +1009,6 @@
             return;
         }
 
-        // Renderizado eficiente en tabla
         tbody.innerHTML = registrosFiltrados.map(row => {
             const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#e11d48; font-weight:bold;">Sin Departamento</span>';
             
@@ -870,10 +1094,7 @@
                             boxWidth: 16,
                             boxHeight: 16,
                             padding: 15,
-                            font: { 
-                                size: 13,
-                                weight: '600'
-                            },
+                            font: { size: 13, weight: '600' },
                             color: '#1e293b',
                             generateLabels: function(chart) {
                                 const data = chart.data;
@@ -901,23 +1122,19 @@
         });
     }
 
-    // Función para exportar la tabla activa a formato PDF
-    function generarReportePDF() {
+    function generarReportePDF1() {
         if (!registrosVisibles || registrosVisibles.length === 0) {
             alert("No hay registros en la vista para generar el reporte.");
             return;
         }
 
         const { jsPDF } = window.jspdf;
-        // Orientación apaisada (landscape) para formato de tabla amplia
         const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
 
-        // Título del reporte
         doc.setFontSize(16);
         doc.setTextColor(26, 115, 232);
         doc.text("APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
 
-        // Subtítulo con fecha y resumen
         doc.setFontSize(9);
         doc.setTextColor(100, 116, 139);
         const hoy = new Date().toLocaleDateString('es-ES', { 
@@ -929,7 +1146,6 @@
 
         doc.text(`Generado el: ${hoy} | Total Registros: ${total} | Instalación: ${inst} | Mantenimiento: ${mant}`, 40, 58);
 
-        // Preparación de filas para jsPDF autoTable
         const tableBody = registrosVisibles.map(row => [
             row["C"] || "",
             row["D"] || "",
@@ -968,13 +1184,12 @@
                 4: { cellWidth: 40 },
                 5: { cellWidth: 50, halign: 'center' },
                 6: { cellWidth: 75 },
-                7: { cellWidth: 180 }, // Observaciones con espacio amplio
+                7: { cellWidth: 180 }, 
                 8: { cellWidth: 65, fontStyle: 'bold' },
                 9: { cellWidth: 65, fontStyle: 'bold' }
             },
             margin: { left: 40, right: 40 },
             didDrawPage: function(data) {
-                // Pie de página con numeración
                 const str = `Página ${doc.internal.getNumberOfPages()}`;
                 doc.setFontSize(8);
                 doc.setTextColor(150);
@@ -982,21 +1197,304 @@
             }
         });
 
-        // Descargar PDF generado
-        doc.save(`Reporte_Aperturas_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
+        doc.save(`Reporte_Panel1_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 
-    function cargarDatos() {
+    // ==============================================================
+    // LOGICA PANEL 2 (RESULTADOS) CON FILTROS Y REPORTE
+    // ==============================================================
+    let globalResultados = []; 
+    let registrosVisiblesRes = [];
+
+    function cargarDatosResultados() {
+        const sheetId = '1xQfFyNb0zihdNq8luRxhDFe2WNVCTGzI2_wDuAEAL-o';
+        const gid = '1722068544'; 
+        
+        const gvizUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json;responseHandler:procesarDatosResultadosGviz&gid=${gid}`;
+
         const script = document.createElement('script');
-        script.src = `${WEB_APP_URL}?callback=procesarDatosSheet`;
+        script.src = gvizUrl;
         script.onerror = function() {
-            document.getElementById('tableBody').innerHTML = `<tr><td colspan="10" style="text-align: center; color: #d9534f; padding:20px;">Error de conexión con Google Sheets.</td></tr>`;
-            document.getElementById('statusBadge').innerText = "Error de conexión";
+            document.getElementById('tableBodyResultados').innerHTML = '<tr><td colspan="7" style="text-align: center; color: #d9534f; padding:20px;">Error de conexión de red.</td></tr>';
+            document.getElementById('statusBadgeResultados').innerText = "Error de red";
         };
         document.body.appendChild(script);
     }
 
-    window.onload = cargarDatos;
+    function procesarDatosResultadosGviz(data) {
+        if (data && data.table && data.table.rows) {
+            globalResultados = [];
+            
+            data.table.rows.forEach((row, index) => {
+                const cells = row.c;
+                if(!cells) return;
+                
+                const abonado = formatGvizValue(cells, 2); 
+                if (index === 0 && abonado.toLowerCase().includes('abonado')) return;
+
+                globalResultados.push({
+                    proyecto: formatGvizValue(cells, 1),
+                    abonado: abonado,
+                    actividad: formatGvizValue(cells, 3),
+                    fecha: formatGvizValue(cells, 4),
+                    aprobacion: formatGvizValue(cells, 5),
+                    resultado: formatGvizValue(cells, 6),
+                    obs: formatGvizValue(cells, 10)
+                });
+            });
+
+            popularFiltrosResultados();
+            aplicarFiltrosResultados();
+        } else {
+            document.getElementById('tableBodyResultados').innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">No se encontraron datos.</td></tr>';
+            document.getElementById('statusBadgeResultados').innerText = "Sin datos";
+        }
+    }
+
+    function popularFiltrosResultados() {
+        const selectActividad = document.getElementById('filterActividadRes');
+        const selectAprobacion = document.getElementById('filterAprobacionRes');
+        const selectResultado = document.getElementById('filterResultadoRes');
+
+        const uniqueActividad = [...new Set(globalResultados.map(item => item.actividad))].filter(val => val !== "").sort();
+        const uniqueAprobacion = [...new Set(globalResultados.map(item => item.aprobacion))].filter(val => val !== "").sort();
+        const uniqueResultado = [...new Set(globalResultados.map(item => item.resultado))].filter(val => val !== "").sort();
+
+        let actHTML = '<option value="">Todas</option>';
+        uniqueActividad.forEach(val => actHTML += `<option value="${val}">${val}</option>`);
+        selectActividad.innerHTML = actHTML;
+
+        let aprHTML = '<option value="">Todas</option>';
+        uniqueAprobacion.forEach(val => aprHTML += `<option value="${val}">${val}</option>`);
+        selectAprobacion.innerHTML = aprHTML;
+
+        let resHTML = '<option value="">Todos</option>';
+        uniqueResultado.forEach(val => resHTML += `<option value="${val}">${val}</option>`);
+        selectResultado.innerHTML = resHTML;
+    }
+
+    function aplicarFiltrosResultados() {
+        const txtAbonado = document.getElementById('filterAbonadoRes').value.toLowerCase().trim();
+        const dateFrom = document.getElementById('filterDateFromRes').value;
+        const dateTo = document.getElementById('filterDateToRes').value;
+        const selActividad = document.getElementById('filterActividadRes').value;
+        const selAprobacion = document.getElementById('filterAprobacionRes').value;
+        const selResultado = document.getElementById('filterResultadoRes').value;
+
+        // Actualizar subtitulo
+        const subt = document.getElementById('dateSubtitlePanel2');
+        if (dateFrom && dateTo) {
+            subt.innerText = `(Del ${formatDateForSubtitle(dateFrom)} al ${formatDateForSubtitle(dateTo)})`;
+        } else if (dateFrom) {
+            subt.innerText = `(Desde el ${formatDateForSubtitle(dateFrom)})`;
+        } else if (dateTo) {
+            subt.innerText = `(Hasta el ${formatDateForSubtitle(dateTo)})`;
+        } else {
+            subt.innerText = "(Historico completo)";
+        }
+
+        let timeFrom = dateFrom ? new Date(dateFrom + "T00:00:00").getTime() : null;
+        let timeTo = dateTo ? new Date(dateTo + "T23:59:59").getTime() : null;
+
+        const registrosFiltrados = globalResultados.filter(item => {
+            const matchAbonado = txtAbonado === "" || item.abonado.toLowerCase().includes(txtAbonado);
+            const matchActividad = selActividad === "" || item.actividad === selActividad;
+            const matchAprobacion = selAprobacion === "" || item.aprobacion === selAprobacion;
+            const matchResultado = selResultado === "" || item.resultado === selResultado;
+            
+            let matchDate = true;
+            if (timeFrom || timeTo) {
+                const rowTime = parseSheetDate(item.fecha);
+                if (rowTime) {
+                    if (timeFrom && rowTime < timeFrom) matchDate = false;
+                    if (timeTo && rowTime > timeTo) matchDate = false;
+                } else {
+                    matchDate = false;
+                }
+            }
+
+            return matchAbonado && matchDate && matchActividad && matchAprobacion && matchResultado;
+        });
+
+        // Ordenamiento descendente
+        registrosFiltrados.sort((a, b) => {
+            const timeA = parseSheetDate(a.fecha) || 0;
+            const timeB = parseSheetDate(b.fecha) || 0;
+            return timeB - timeA; 
+        });
+
+        registrosVisiblesRes = registrosFiltrados;
+
+        renderTableResultados(registrosFiltrados);
+        actualizarMetricasTablaResultados(registrosFiltrados);
+        document.getElementById('statusBadgeResultados').innerText = `Sincronizado (${registrosFiltrados.length} registros)`;
+    }
+
+    function actualizarMetricasTablaResultados(registros) {
+        let totAprobadas = 0, totRechazadas = 0, totSinResp = 0;
+        let totExito = 0, totFracaso = 0;
+        let mantExito = 0, mantFracaso = 0;
+        let instExito = 0, instFracaso = 0;
+        let vertExito = 0, vertFracaso = 0;
+
+        registros.forEach(item => {
+            const aprobacion = item.aprobacion.toUpperCase();
+            const resultado = item.resultado.toUpperCase();
+            const actividad = item.actividad.toUpperCase();
+
+            const aprobada = (aprobacion === 'SI' || aprobacion === 'SÍ');
+            if (aprobada) totAprobadas++;
+            else if (aprobacion === 'NO') totRechazadas++;
+            else if (aprobacion.includes('SIN RESPUESTA')) totSinResp++;
+
+            if (aprobada && (resultado === 'ÉXITO' || resultado === 'EXITO')) {
+                totExito++;
+                if (actividad.includes('MANTENIMIENTO')) mantExito++;
+                if (actividad.includes('INSTALACI')) instExito++;
+                if (actividad.includes('VERTICALES')) vertExito++;
+            }
+
+            if (aprobada && resultado === 'FRACASO') {
+                totFracaso++;
+                if (actividad.includes('MANTENIMIENTO')) mantFracaso++;
+                if (actividad.includes('INSTALACI')) instFracaso++;
+                if (actividad.includes('VERTICALES')) vertFracaso++;
+            }
+        });
+
+        document.getElementById('resTotEnviadas').innerText = registros.length;
+        document.getElementById('resTotAprobadas').innerText = totAprobadas;
+        document.getElementById('resTotRechazadas').innerText = totRechazadas;
+        document.getElementById('resTotSinResp').innerText = totSinResp;
+
+        document.getElementById('resExitoTotal').innerText = totExito;
+        document.getElementById('resExitoMant').innerText = mantExito;
+        document.getElementById('resExitoInst').innerText = instExito;
+        document.getElementById('resExitoVert').innerText = vertExito;
+
+        document.getElementById('resFracTotal').innerText = totFracaso;
+        document.getElementById('resFracMant').innerText = mantFracaso;
+        document.getElementById('resFracInst').innerText = instFracaso;
+        document.getElementById('resFracVert').innerText = vertFracaso;
+    }
+
+    function renderTableResultados(rows) {
+        const tbody = document.getElementById('tableBodyResultados');
+        
+        if (rows.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #777; padding: 20px;">No se encontraron registros que coincidan con los filtros.</td></tr>';
+            return;
+        }
+
+        let html = '';
+        rows.forEach(item => {
+            let badgeAprobacion = item.aprobacion;
+            if (item.aprobacion.toUpperCase() === 'SI' || item.aprobacion.toUpperCase() === 'SÍ') {
+                badgeAprobacion = `<span class="badge-si">${item.aprobacion}</span>`;
+            } else if (item.aprobacion.toUpperCase() === 'NO' || item.aprobacion.toUpperCase().includes('SIN RESPUESTA')) {
+                badgeAprobacion = `<span class="badge-no">${item.aprobacion}</span>`;
+            } else if (item.aprobacion !== '') {
+                badgeAprobacion = `<span class="badge-neutral">${item.aprobacion}</span>`;
+            }
+
+            let badgeResultado = item.resultado;
+            if (item.resultado.toUpperCase() === 'ÉXITO' || item.resultado.toUpperCase() === 'EXITO') {
+                badgeResultado = `<span class="badge-si">${item.resultado}</span>`;
+            } else if (item.resultado.toUpperCase() === 'FRACASO') {
+                badgeResultado = `<span class="badge-no">${item.resultado}</span>`;
+            } else if (item.resultado !== '' && item.resultado.toUpperCase() !== 'N/A') {
+                badgeResultado = `<span class="badge-neutral">${item.resultado}</span>`;
+            }
+
+            html += `<tr>
+                <td><b>${item.abonado}</b></td>
+                <td>${item.proyecto}</td>
+                <td>${item.actividad}</td>
+                <td>${item.fecha}</td>
+                <td style="text-align: center;">${badgeAprobacion}</td>
+                <td style="text-align: center;">${badgeResultado}</td>
+                <td class="obs-col">${item.obs}</td>
+            </tr>`;
+        });
+
+        tbody.innerHTML = html;
+    }
+
+    function generarReportePDF2() {
+        if (!registrosVisiblesRes || registrosVisiblesRes.length === 0) {
+            alert("No hay registros en la vista para generar el reporte de Resultados.");
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+
+        doc.setFontSize(16);
+        doc.setTextColor(26, 115, 232);
+        doc.text("RESULTADOS DE APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
+
+        doc.setFontSize(9);
+        doc.setTextColor(100, 116, 139);
+        const hoy = new Date().toLocaleDateString('es-ES', { 
+            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+        });
+        
+        const subt = document.getElementById('dateSubtitlePanel2').innerText;
+        doc.text(`Generado el: ${hoy} | Periodo: ${subt} | Registros mostrados: ${registrosVisiblesRes.length}`, 40, 58);
+
+        const tableBody = registrosVisiblesRes.map(item => [
+            item.abonado,
+            item.proyecto,
+            item.actividad,
+            item.fecha,
+            item.aprobacion,
+            item.resultado,
+            item.obs
+        ]);
+
+        doc.autoTable({
+            startY: 70,
+            head: [['ABONADO', 'PROYECTO', 'ACTIVIDAD', 'FECHA DE ENVÍO', 'APROB.', 'RESULTADO', 'OBSERVACIONES']],
+            body: tableBody,
+            theme: 'striped',
+            styles: {
+                fontSize: 8,
+                cellPadding: 5,
+                overflow: 'linebreak',
+                valign: 'middle'
+            },
+            headStyles: {
+                fillColor: [26, 115, 232],
+                textColor: 255,
+                fontStyle: 'bold',
+                halign: 'left'
+            },
+            columnStyles: {
+                0: { cellWidth: 70, fontStyle: 'bold' },
+                1: { cellWidth: 150 },
+                2: { cellWidth: 100 },
+                3: { cellWidth: 70 },
+                4: { cellWidth: 70, halign: 'center' },
+                5: { cellWidth: 70, halign: 'center' },
+                6: { cellWidth: 'auto' } // Observaciones toma el resto del espacio
+            },
+            margin: { left: 40, right: 40 },
+            didDrawPage: function(data) {
+                const str = `Página ${doc.internal.getNumberOfPages()}`;
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text(str, doc.internal.pageSize.width - 40 - doc.getTextWidth(str), doc.internal.pageSize.height - 20);
+            }
+        });
+
+        doc.save(`Reporte_Resultados_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
+    }
+
+    // Inicialización general de la página
+    window.onload = function() {
+        cargarDatosPanel1();
+        cargarDatosResultados();
+    };
 </script>
 
 </body>
