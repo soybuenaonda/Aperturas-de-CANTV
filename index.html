@@ -186,8 +186,7 @@
             flex-direction: column;
             height: 100%;
             box-sizing: border-box;
-            max-height: 450px;
-            overflow-y: auto;
+            max-height: 480px;
         }
 
         .analytics-card h3 {
@@ -196,54 +195,113 @@
             color: #1e293b;
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        /* Estilos para las barras de progreso del Panel 1 */
+        /* DISEÑO MEJORADO PANEL 1 (Total Aperturas y Barras) */
+        .total-aperturas-box {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
+        }
+
+        .total-aperturas-box .total-label {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .total-aperturas-box .total-val {
+            font-size: 26px;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
         .progress-list-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 10px;
+            gap: 16px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        /* Scrollbar personalizado */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
         }
 
         .progress-item {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .progress-label-container {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            align-items: flex-end;
+        }
+        
+        .progress-label-container .depto-name {
+            font-size: 13px;
             font-weight: 700;
-            color: #1e293b;
+            color: #334155;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+        }
+
+        .progress-label-container .depto-stats {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .progress-label-container .qty {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .progress-label-container .pct {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
         }
         
         .progress-track {
             width: 100%;
-            height: 24px;
+            height: 12px;
             background-color: #e2e8f0;
-            border-radius: 4px;
+            border-radius: 10px;
             position: relative;
             overflow: hidden;
-            border: 1px solid #cbd5e1;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
         }
 
         .progress-fill {
             height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 3px 0 0 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            transition: width 0.5s ease;
-            white-space: nowrap;
-            overflow: hidden;
+            background: linear-gradient(90deg, #60a5fa, var(--primary-color));
+            border-radius: 10px;
+            transition: width 0.6s ease-out;
         }
 
         /* Estilos para las tarjetas de resumen del Panel 2 */
@@ -470,8 +528,15 @@
     <div class="panel-split">
         <div class="analytics-card">
             <h3>📊 Progreso por Departamento</h3>
-            <div id="progressContainerDepto" class="progress-list-container">
-                <!-- Se llenará vía JS con barras azules -->
+            
+            <!-- Nueva Caja de Total de Aperturas Destacada -->
+            <div class="total-aperturas-box">
+                <span class="total-label">Total Aperturas</span>
+                <span id="totalAperturasDepto" class="total-val">0</span>
+            </div>
+
+            <div id="progressContainerDepto" class="progress-list-container custom-scrollbar">
+                <!-- Se llenará vía JS con barras estilizadas -->
             </div>
         </div>
 
@@ -553,7 +618,7 @@
 
     <!-- Estructura Principal Panel 2: Analítica Tabular (30%) y Tabla (70%) -->
     <div class="panel-split">
-        <div class="analytics-card">
+        <div class="analytics-card" style="overflow-y: auto;">
             <h3>📈 Resumen de Solicitudes</h3>
             <span id="dateSubtitlePanel2" style="font-size:11px; color:#64748b; margin-bottom:15px; display:block;">(Histórico completo)</span>
             
@@ -780,12 +845,14 @@
         });
 
         const total = registros.length;
+        // Actualizamos el número principal
+        document.getElementById('totalAperturasDepto').innerText = total;
+
         const container = document.getElementById('progressContainerDepto');
-        
         let sortedDepts = Object.entries(deptCounts).sort((a, b) => b[1] - a[1]);
         
         if (total === 0) {
-            container.innerHTML = '<span style="color:#64748b; font-size:12px;">Sin datos para mostrar</span>';
+            container.innerHTML = '<span style="color:#64748b; font-size:13px; text-align:center; display:block; margin-top:10px;">Sin datos para mostrar</span>';
             return;
         }
 
@@ -798,8 +865,11 @@
             html += `
             <div class="progress-item">
                 <div class="progress-label-container">
-                    <span>${index + 1}. ${deptoName}</span>
-                    <span>${count} (${pct}%)</span>
+                    <span class="depto-name" title="${deptoName}">${index + 1}. ${deptoName}</span>
+                    <div class="depto-stats">
+                        <span class="qty">${count}</span>
+                        <span class="pct">(${pct}%)</span>
+                    </div>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" style="width: ${pct}%;"></div>
