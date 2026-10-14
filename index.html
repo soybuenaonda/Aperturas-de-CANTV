@@ -12,7 +12,7 @@
             --primary-dark: #1557b0;
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
-            --text-color: #2c3e50;
+            --text-color: #000000;
             --border-color: #cbd5e1;
         }
 
@@ -45,10 +45,10 @@
         }
 
         h1 {
-            font-size: 20px;
+            font-size: 22px;
             color: var(--primary-color);
             margin: 0;
-            font-weight: 800;
+            font-weight: 900;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -80,11 +80,11 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             display: flex;
             flex-wrap: nowrap;
-            overflow-x: auto;
+            overflow: visible;
             gap: 15px;
             align-items: flex-end;
             position: relative;
-            z-index: 50;
+            z-index: 500;
         }
 
         .ribbon-section {
@@ -105,8 +105,8 @@
 
         .filter-control label {
             font-size: 10px;
-            font-weight: 800;
-            color: #64748b;
+            font-weight: 900;
+            color: #000000;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             white-space: nowrap;
@@ -121,32 +121,32 @@
             border-radius: 4px;
             font-size: 12px;
             background-color: #fff;
-            color: #0f172a;
+            color: #000000;
+            font-weight: 700;
             box-sizing: border-box;
             font-family: inherit;
         }
 
         .dropdown-multiselect { position: relative; width: 100%; cursor: pointer; user-select: none; }
-        .dropdown-select-btn { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700;}
+        .dropdown-select-btn { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
         .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 250px; box-shadow: 0px 10px 25px rgba(0,0,0,0.15); z-index: 9999; border: 1px solid var(--border-color); border-radius: 4px; max-height: 250px; overflow-y: auto; padding: 5px; left: 0; top: 100%; margin-top: 4px; }
         .dropdown-content.show { display: block; }
         .dropdown-actions { display: flex; justify-content: space-between; padding: 4px 4px 8px 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 6px; background: #fff; position: sticky; top: 0; z-index: 10; }
-        .dropdown-actions button { background: none; border: none; color: var(--primary-color); font-size: 11px; font-weight: 700; cursor: pointer; }
-        .dropdown-item { padding: 6px 8px; display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; color: #334155; font-weight: 600;}
+        .dropdown-actions button { background: none; border: none; color: var(--primary-color); font-size: 11px; font-weight: 800; cursor: pointer; }
+        .dropdown-item { padding: 6px 8px; display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; color: #000000; font-weight: 700;}
 
-        /* Estructuras Divididas */
+        /* Estructuras Divididas (15% para tarjeta, 85% para tabla con ancho mínimo) */
         .panel-split {
             display: grid;
-            grid-template-columns: 30% 1fr;
+            grid-template-columns: minmax(250px, 15%) 1fr;
             gap: 15px;
             margin-bottom: 20px;
             align-items: start;
         }
 
-        /* Diseño específico 10% barras / 90% tabla para Panel 1 */
         .panel-split-panel1 {
             display: grid;
-            grid-template-columns: minmax(180px, 12%) 1fr;
+            grid-template-columns: minmax(250px, 15%) 1fr;
             gap: 15px;
             margin-bottom: 20px;
             align-items: start;
@@ -159,19 +159,19 @@
         /* Tarjeta de Progreso Lateral (Panel 1) */
         .progress-card {
             background-color: var(--card-bg);
-            padding: 15px;
+            padding: 18px;
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid var(--border-color);
         }
 
         .progress-header {
-            font-size: 12px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 12px;
+            font-size: 14px; /* Aumentado */
+            font-weight: 900;
+            color: #000000;
+            margin-bottom: 15px;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 6px;
+            padding-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -180,34 +180,34 @@
         .total-block {
             background-color: var(--primary-color);
             color: white;
-            padding: 12px 15px;
+            padding: 15px 18px; /* Aumentado padding */
             border-radius: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .total-block-title { font-weight: 700; font-size: 11px; }
-        .total-block-val { font-weight: 900; font-size: 20px; }
+        .total-block-title { font-weight: 800; font-size: 13px; } /* Aumentado */
+        .total-block-val { font-weight: 900; font-size: 26px; } /* Aumentado considerablemente */
         
-        .bar-container { margin-bottom: 12px; }
+        .bar-container { margin-bottom: 14px; }
         .bar-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
-            font-weight: 800;
-            margin-bottom: 4px;
-            color: #0f172a;
+            font-size: 12px; /* Aumentado */
+            font-weight: 900;
+            margin-bottom: 5px;
+            color: #000000;
             white-space: nowrap;
         }
-        .bar-bg { background-color: #e2e8f0; height: 6px; border-radius: 3px; width: 100%; overflow: hidden; }
-        .bar-fill { background-color: var(--primary-color); height: 100%; border-radius: 3px; }
+        .bar-bg { background-color: #e2e8f0; height: 7px; border-radius: 4px; width: 100%; overflow: hidden; }
+        .bar-fill { background-color: var(--primary-color); height: 100%; border-radius: 4px; }
 
         /* Tarjeta Analítica Lateral (Panel 2) */
         .analytics-card {
             background-color: var(--card-bg);
-            padding: 15px;
+            padding: 18px;
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid var(--border-color);
@@ -215,51 +215,62 @@
 
         .analytics-card h3 {
             margin-top: 0;
-            font-size: 13px;
-            color: #1e293b;
+            font-size: 14px; /* Aumentado */
+            font-weight: 900;
+            color: #000000;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 6px;
-            margin-bottom: 8px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .summary-card-group {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px; /* Aumentado */
+            margin-bottom: 12px;
         }
 
         .summary-card-header {
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 12px; /* Aumentado */
+            font-weight: 900;
             color: var(--primary-color);
             margin-bottom: 8px;
             border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
             text-align: center;
+            text-transform: uppercase;
         }
 
-        .summary-item { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px solid #f1f5f9; color: #475569; font-weight: 700; }
+        .summary-item { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 12px; /* Aumentado */
+            padding: 5px 0; 
+            border-bottom: 1px solid #f1f5f9; 
+            color: #000000; 
+            font-weight: 800; 
+            align-items: center;
+        }
         .summary-item:last-child { border-bottom: none; }
-        .summary-item .value { font-weight: 900; color: #0f172a; }
+        .summary-item .value { font-weight: 900; color: #000000; font-size: 13px; } /* Aumentado */
         .success { color: #10b981 !important; font-weight: 900 !important; }
         .danger { color: #ef4444 !important; font-weight: 900 !important; }
 
         /* Contenedores de Tablas */
-        .card { background-color: var(--card-bg); border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+        .card { background-color: var(--card-bg); border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid var(--border-color); position: relative; z-index: 1;}
         .table-responsive { max-height: 520px; overflow-y: auto; border-radius: 6px; position: relative; }
 
-        /* TABLAS - ALTURA REDUCIDA Y DENSIDAD */
+        /* TABLAS */
         table { width: 100%; border-collapse: collapse; font-size: 10px; }
         
         th, td {
-            padding: 4px 6px; /* Altura de fila significativamente reducida */
+            padding: 4px 6px; 
             text-align: center; 
             border-bottom: 1px solid #e2e8f0;
             white-space: nowrap;
-            font-weight: 700; 
-            color: #0f172a; 
+            font-weight: 800;
+            color: #000000; 
         }
 
         th {
@@ -269,14 +280,20 @@
             font-size: 9px;
             font-weight: 900;
             text-transform: uppercase;
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+            border-bottom: none !important;
         }
 
         tr:hover { background-color: #e9f2fb; }
 
-        /* Estilo Azul para Encabezado Panel 1 según referencia */
-        #tablaPanel1 th { background-color: var(--primary-color); color: #ffffff; border-bottom: none; }
-        /* Estilo Gris/Claro para Encabezado Panel 2 */
-        #tablaResultados th { background-color: #f1f5f9; color: #1e293b; border-bottom: 2px solid #cbd5e1; }
+        .sortable-header {
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        
+        th.sortable-header:hover { background-color: var(--primary-dark) !important; }
 
         #tablaPanel1 { table-layout: fixed; width: 100%; }
         #tablaPanel1 th:nth-child(1) { width: 6%; } 
@@ -286,7 +303,7 @@
         #tablaPanel1 th:nth-child(5) { width: 4%; }  
         #tablaPanel1 th:nth-child(6) { width: 6%; }  
         #tablaPanel1 th:nth-child(7) { width: 14%; } 
-        #tablaPanel1 th:nth-child(8) { width: 25%; } /* Columna Observaciones */
+        #tablaPanel1 th:nth-child(8) { width: 25%; } 
         #tablaPanel1 th:nth-child(9) { width: 10%; }  
         #tablaPanel1 th:nth-child(10) { width: 10%; } 
 
@@ -299,11 +316,10 @@
         #tablaResultados th:nth-child(6) { width: 10%; } 
         #tablaResultados th:nth-child(7) { width: 17%; } 
 
-        /* TRUNCAMIENTO DE OBSERVACIONES (Por defecto) */
         td.obs-col { 
             font-size: 9px; 
-            color: #0f172a !important; 
-            font-weight: 700 !important;
+            color: #000000 !important; 
+            font-weight: 800 !important;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -315,7 +331,6 @@
             white-space: nowrap;
         }
 
-        /* EXPANSIÓN DINÁMICA (Cuando hay búsqueda activa) */
         .search-active td.obs-col, 
         .search-active td.proyecto-col,
         .search-active td.resultado-col {
@@ -323,11 +338,11 @@
             word-wrap: break-word;
         }
 
-        .loading { text-align: center; padding: 25px; color: #0f172a; font-size: 13px; font-weight: 800;}
-        .badge-si { background-color: #dcfce7; color: #166534; padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 9px; display: inline-block; }
-        .badge-no { background-color: #fee2e2; color: #991b1b; padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 9px; display: inline-block; }
-        .badge-neutral { background-color: #f1f5f9; color: #0f172a; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; display: inline-block; border: 1px solid #cbd5e1; }
-        .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 4px; background-color: #e2f0d9; color: #385723; font-weight: 800; border: 1px solid #c8e6c9; }
+        .loading { text-align: center; padding: 25px; color: #000000; font-size: 13px; font-weight: 900;}
+        .badge-si { background-color: #dcfce7; color: #166534; padding: 3px 6px; border-radius: 4px; font-weight: 900; font-size: 9px; display: inline-block; }
+        .badge-no { background-color: #fee2e2; color: #991b1b; padding: 3px 6px; border-radius: 4px; font-weight: 900; font-size: 9px; display: inline-block; }
+        .badge-neutral { background-color: #f1f5f9; color: #000000; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; display: inline-block; border: 1px solid #cbd5e1; }
+        .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 4px; background-color: #e2f0d9; color: #385723; font-weight: 900; border: 1px solid #c8e6c9; }
         .dashboard-separator { margin: 30px 0; border-top: 2px dashed #cbd5e1; }
     </style>
 </head>
@@ -395,7 +410,7 @@
         </div>
     </div>
 
-    <!-- ESTRUCTURA 10/90 PARA PANEL 1 (Barras / Tabla) -->
+    <!-- ESTRUCTURA 15/85 PARA PANEL 1 (Barras / Tabla) -->
     <div class="panel-split-panel1">
         
         <!-- Izquierda: Barras de Progreso -->
@@ -411,7 +426,8 @@
                     <thead>
                         <tr>
                             <th>N°</th>
-                            <th>FECHA</th>
+                            <!-- Columna Ordenable -->
+                            <th class="sortable-header" onclick="toggleSortPanel1()" title="Clic para ordenar">FECHA <span id="sortIcon1">▼</span></th>
                             <th>ACTIVIDAD</th>
                             <th>DEPTO</th>
                             <th>SLA</th>
@@ -471,11 +487,11 @@
         </div>
     </div>
 
-    <!-- ESTRUCTURA 30/70 PARA PANEL 2 -->
+    <!-- ESTRUCTURA 15/85 PARA PANEL 2 -->
     <div class="panel-split">
         <div class="analytics-card" style="overflow-y: auto;">
             <h3 style="display: flex; align-items: center; gap: 8px;">📈 Resumen de Solicitudes</h3>
-            <span id="dateSubtitlePanel2" style="font-size:10px; color:#64748b; margin-bottom:12px; display:block;">(Histórico completo)</span>
+            <span id="dateSubtitlePanel2" style="font-size:11px; color:#000000; font-weight:900; margin-bottom:15px; display:block;">(Histórico completo)</span>
             <div id="resumenResultadosText" style="display: flex; flex-direction: column;"></div>
         </div>
 
@@ -487,7 +503,8 @@
                             <th>ABONADO</th>
                             <th>PROYECTO</th>
                             <th>ACTIVIDAD</th>
-                            <th>FECHA DE ENVÍO</th>
+                            <!-- Columna Ordenable -->
+                            <th class="sortable-header" onclick="toggleSortPanel2()" title="Clic para ordenar">FECHA DE ENVÍO <span id="sortIcon2">▼</span></th>
                             <th>APROBACIÓN</th>
                             <th>RESULTADO</th>
                             <th>OBSERVACIONES</th>
@@ -512,6 +529,10 @@
     let mapaEstados = {}; 
     let datosPanel1Listos = false;
     let datosResultadosListos = false;
+    
+    // Variables para Ordenamiento
+    let sortDescPanel1 = true;
+    let sortDescPanel2 = true;
 
     // Utilidades
     function toggleDropdown(contentId) {
@@ -546,6 +567,19 @@
         if (cell.f) return cell.f; 
         if (cell.v !== null && cell.v !== undefined) return String(cell.v).trim();
         return "";
+    }
+
+    // Funciones de Ordenamiento Interactivo
+    function toggleSortPanel1() {
+        sortDescPanel1 = !sortDescPanel1;
+        document.getElementById('sortIcon1').innerText = sortDescPanel1 ? "▼" : "▲";
+        aplicarFiltros();
+    }
+
+    function toggleSortPanel2() {
+        sortDescPanel2 = !sortDescPanel2;
+        document.getElementById('sortIcon2').innerText = sortDescPanel2 ? "▼" : "▲";
+        aplicarFiltrosResultados();
     }
 
     // --- LÓGICA PANEL 1 ---
@@ -645,10 +679,11 @@
             return matchSearch && matchDate && matchF && matchG && matchO;
         });
 
+        // Ordenamiento dinámico basado en la variable sortDescPanel1
         registrosFiltrados.sort((a, b) => {
             const timeA = parseSheetDate(a["D"]) || 0;
             const timeB = parseSheetDate(b["D"]) || 0;
-            return timeB - timeA; 
+            return sortDescPanel1 ? (timeB - timeA) : (timeA - timeB); 
         });
 
         registrosVisibles = registrosFiltrados;
@@ -661,7 +696,7 @@
                 const numAbonado = (row["C"] || "").toUpperCase().trim();
                 const estadoActualizado = mapaEstados[numAbonado];
 
-                const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#ef4444;">Sin Departamento</span>';
+                const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#ef4444; font-weight:900;">Sin Departamento</span>';
                 const planillaTxt = (row["I"] || "").trim().toUpperCase();
                 let planillaBadge = planillaTxt;
                 if (planillaTxt === "SI" || planillaTxt === "SÍ") planillaBadge = `<span class="badge-si">SI</span>`;
@@ -672,6 +707,16 @@
                 row["APROBACION_MERGED"] = valAprobacion;
                 row["RESULTADO_MERGED"] = valResultado;
 
+                let bAprob = valAprobacion;
+                if (valAprobacion.toUpperCase() === 'SI' || valAprobacion.toUpperCase() === 'SÍ') bAprob = `<span class="badge-si">${valAprobacion}</span>`;
+                else if (valAprobacion.toUpperCase() === 'NO' || valAprobacion.toUpperCase().includes('SIN RESPUESTA')) bAprob = `<span class="badge-no">${valAprobacion}</span>`;
+                else if (valAprobacion !== '') bAprob = `<span class="badge-neutral">${valAprobacion}</span>`;
+
+                let bRes = valResultado;
+                if (valResultado.toUpperCase() === 'ÉXITO' || valResultado.toUpperCase() === 'EXITO') bRes = `<span class="badge-si">${valResultado}</span>`;
+                else if (valResultado.toUpperCase() === 'FRACASO') bRes = `<span class="badge-no">${valResultado}</span>`;
+                else if (valResultado !== '' && valResultado.toUpperCase() !== 'N/A') bRes = `<span class="badge-neutral">${valResultado}</span>`;
+
                 return `<tr>
                     <td>${row["C"] || ''}</td>
                     <td>${row["D"] || ''}</td>
@@ -681,8 +726,8 @@
                     <td>${planillaBadge}</td>
                     <td class="proyecto-col">${row["O"] || ''}</td>
                     <td class="obs-col" title="${(row["N"] || '').replace(/"/g, '&quot;')}">${row["N"] || ''}</td>
-                    <td>${valAprobacion}</td>
-                    <td class="resultado-col">${valResultado}</td>
+                    <td>${bAprob}</td>
+                    <td class="resultado-col">${bRes}</td>
                 </tr>`;
             }).join('');
         }
@@ -703,7 +748,6 @@
         deptoArr.sort((a, b) => b.count - a.count);
 
         let html = `
-            <h3 class="progress-header">📊 Progreso por Departamento</h3>
             <div class="total-block">
                 <span class="total-block-title">Total Aperturas</span>
                 <span class="total-block-val">${total}</span>
@@ -716,7 +760,7 @@
                 <div class="bar-container">
                     <div class="bar-labels">
                         <span>${index + 1}. ${item.nombre}</span>
-                        <span>${item.count} <span style="color:#94a3b8; font-weight:normal;">(${pct}%)</span></span>
+                        <span>${item.count} <span style="color:#000000; font-weight:900;">(${pct}%)</span></span>
                     </div>
                     <div class="bar-bg">
                         <div class="bar-fill" style="width: ${pct}%;"></div>
@@ -825,10 +869,11 @@
             return matchAbonado && matchDate && matchActividad && matchAprobacion && matchResultado;
         });
 
+        // Ordenamiento dinámico basado en la variable sortDescPanel2
         registrosFiltrados.sort((a, b) => {
             const timeA = parseSheetDate(a.fecha) || 0;
             const timeB = parseSheetDate(b.fecha) || 0;
-            return timeB - timeA;
+            return sortDescPanel2 ? (timeB - timeA) : (timeA - timeB);
         });
 
         registrosVisiblesRes = registrosFiltrados;
@@ -869,7 +914,7 @@
         if (dateFrom && dateTo) subt.innerText = `(Del ${formatDateForSubtitle(dateFrom)} al ${formatDateForSubtitle(dateTo)})`;
         else if (dateFrom) subt.innerText = `(Desde el ${formatDateForSubtitle(dateFrom)})`;
         else if (dateTo) subt.innerText = `(Hasta el ${formatDateForSubtitle(dateTo)})`;
-        else subt.innerText = "(Historico completo)";
+        else subt.innerText = "(Histórico completo)";
     }
 
     function formatDateForSubtitle(dateString) {
@@ -924,19 +969,19 @@
                 <div class="summary-card-header">Rendimiento (Éxito / Fracaso)</div>
                 <div class="summary-item" style="background-color: #f1f5f9; padding: 6px; border-radius: 4px; border: 1px solid #e2e8f0; margin-bottom:4px;">
                     <span>Total General</span>
-                    <span class="value"><span class="success">${totExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${totFracaso}</span></span>
+                    <span class="value"><span class="success">${totExito}</span> <span style="color:#cbd5e1; font-weight:800;">/</span> <span class="danger">${totFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Mantenimientos</span>
-                    <span class="value"><span class="success">${mantExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${mantFracaso}</span></span>
+                    <span class="value"><span class="success">${mantExito}</span> <span style="color:#cbd5e1; font-weight:800;">/</span> <span class="danger">${mantFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Instalaciones</span>
-                    <span class="value"><span class="success">${instExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${instFracaso}</span></span>
+                    <span class="value"><span class="success">${instExito}</span> <span style="color:#cbd5e1; font-weight:800;">/</span> <span class="danger">${instFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Verticales</span>
-                    <span class="value"><span class="success">${vertExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${vertFracaso}</span></span>
+                    <span class="value"><span class="success">${vertExito}</span> <span style="color:#cbd5e1; font-weight:800;">/</span> <span class="danger">${vertFracaso}</span></span>
                 </div>
             </div>
         `;
