@@ -9,14 +9,11 @@
     <style>
         :root {
             --primary-color: #1a73e8;
+            --primary-dark: #1557b0;
             --bg-color: #f4f6f9;
             --card-bg: #ffffff;
             --text-color: #2c3e50;
-            --border-color: #dcdcdc;
-            --filter-bg: #f8fafc;
-            --table-header-bg: #6ca0dc;
-            --table-row-alt1: #e9f2fb;
-            --table-row-alt2: #f4f8fc;
+            --border-color: #cbd5e1;
         }
 
         body {
@@ -28,7 +25,7 @@
         }
 
         .container {
-            max-width: 1550px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
@@ -36,7 +33,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
             gap: 12px;
         }
@@ -48,410 +45,290 @@
         }
 
         h1 {
-            font-size: 22px;
+            font-size: 20px;
             color: var(--primary-color);
             margin: 0;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .btn-pdf {
             background-color: #059669;
             color: #ffffff;
             border: none;
-            border-radius: 6px;
-            padding: 8px 15px;
+            border-radius: 4px;
+            padding: 8px 14px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-            transition: all 0.2s ease;
-            font-family: inherit;
+            transition: background-color 0.2s;
         }
 
-        .btn-pdf:hover {
-            background-color: #047857;
-            transform: translateY(-1px);
-        }
+        .btn-pdf:hover { background-color: #047857; }
 
-        .filter-card {
-            background-color: var(--filter-bg);
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        .dashboard-ribbon {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 15px;
+            align-items: flex-end;
             position: relative;
             z-index: 50;
         }
 
-        .filters-header {
+        .ribbon-section {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #1e293b;
-            border-bottom: 1px solid #cbd5e1;
-            padding-bottom: 8px;
+            flex-wrap: nowrap;
+            gap: 10px;
+            align-items: flex-end;
+            width: 100%;
         }
 
-        .toggle-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            width: 26px;
-            height: 26px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-
-        .filters-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 50;
-        }
-
-        .filters-container.collapsed {
-            display: none;
-        }
-
-        .filter-group {
+        .filter-control {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            position: relative;
+            gap: 5px;
+            min-width: 100px;
+            flex: 1;
         }
 
-        .filter-group label {
+        .filter-control label {
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .filter-control input, 
+        .filter-control select, 
+        .dropdown-select-btn {
+            height: 32px;
+            padding: 0 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
             font-size: 12px;
-            font-weight: 600;
-            color: #475569;
-        }
-
-        .filters-container select,
-        .filters-container input[type="text"],
-        .filters-container input[type="date"] {
-            padding: 8px 10px;
-            border: 1px solid #94a3b8;
-            border-radius: 6px;
-            font-size: 13px;
-            background-color: white;
-            color: #1e293b;
-            width: 100%;
+            background-color: #fff;
+            color: #0f172a;
             box-sizing: border-box;
             font-family: inherit;
         }
 
-        .filter-search-input {
-            border-color: var(--primary-color) !important;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-        }
+        .dropdown-multiselect { position: relative; width: 100%; cursor: pointer; user-select: none; }
+        .dropdown-select-btn { display: flex; justify-content: space-between; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700;}
+        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 250px; box-shadow: 0px 10px 25px rgba(0,0,0,0.15); z-index: 9999; border: 1px solid var(--border-color); border-radius: 4px; max-height: 250px; overflow-y: auto; padding: 5px; left: 0; top: 100%; margin-top: 4px; }
+        .dropdown-content.show { display: block; }
+        .dropdown-actions { display: flex; justify-content: space-between; padding: 4px 4px 8px 4px; border-bottom: 1px solid #e2e8f0; margin-bottom: 6px; background: #fff; position: sticky; top: 0; z-index: 10; }
+        .dropdown-actions button { background: none; border: none; color: var(--primary-color); font-size: 11px; font-weight: 700; cursor: pointer; }
+        .dropdown-item { padding: 6px 8px; display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; color: #334155; font-weight: 600;}
 
-        /* Disposición Dividida 30% / 70% */
+        /* Estructuras Divididas */
         .panel-split {
             display: grid;
             grid-template-columns: 30% 1fr;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 20px;
             align-items: start;
         }
 
-        @media (max-width: 1100px) {
-            .panel-split {
-                grid-template-columns: 1fr;
-            }
+        /* Diseño específico 10% barras / 90% tabla para Panel 1 */
+        .panel-split-panel1 {
+            display: grid;
+            grid-template-columns: minmax(180px, 12%) 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: start;
         }
 
+        @media (max-width: 1200px) {
+            .panel-split, .panel-split-panel1 { grid-template-columns: 1fr; }
+        }
+
+        /* Tarjeta de Progreso Lateral (Panel 1) */
+        .progress-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            font-size: 12px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .total-block {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .total-block-title { font-weight: 700; font-size: 11px; }
+        .total-block-val { font-weight: 900; font-size: 20px; }
+        
+        .bar-container { margin-bottom: 12px; }
+        .bar-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+        .bar-bg { background-color: #e2e8f0; height: 6px; border-radius: 3px; width: 100%; overflow: hidden; }
+        .bar-fill { background-color: var(--primary-color); height: 100%; border-radius: 3px; }
+
+        /* Tarjeta Analítica Lateral (Panel 2) */
         .analytics-card {
             background-color: var(--card-bg);
-            padding: 18px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            box-sizing: border-box;
-            max-height: 480px;
         }
 
         .analytics-card h3 {
             margin-top: 0;
-            font-size: 15px;
+            font-size: 13px;
             color: #1e293b;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
         }
 
-        /* DISEÑO MEJORADO PANEL 1 (Total Aperturas y Barras) */
-        .total-aperturas-box {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
-            color: white;
-            padding: 14px 18px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.25);
-        }
-
-        .total-aperturas-box .total-label {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .total-aperturas-box .total-val {
-            font-size: 26px;
-            font-weight: 800;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .progress-list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-
-        /* Scrollbar personalizado */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f5f9; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
-        .progress-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .progress-label-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-        
-        .progress-label-container .depto-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: #334155;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 60%;
-        }
-
-        .progress-label-container .depto-stats {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-        }
-
-        .progress-label-container .qty {
-            font-size: 15px;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .progress-label-container .pct {
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-        }
-        
-        .progress-track {
-            width: 100%;
-            height: 12px;
-            background-color: #e2e8f0;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #60a5fa, var(--primary-color));
-            border-radius: 10px;
-            transition: width 0.6s ease-out;
-        }
-
-        /* Estilos para las tarjetas de resumen del Panel 2 */
         .summary-card-group {
-            background-color: #f8fafc;
+            background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
 
         .summary-card-header {
-            font-size: 13px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 800;
             color: var(--primary-color);
             margin-bottom: 8px;
-            border-bottom: 1px solid #cbd5e1;
+            border-bottom: 1px solid #e2e8f0;
             padding-bottom: 4px;
+            text-align: center;
         }
 
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            padding: 5px 0;
-            border-bottom: 1px dashed #e2e8f0;
-            color: #334155;
-        }
+        .summary-item { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-bottom: 1px solid #f1f5f9; color: #475569; font-weight: 700; }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-item .value { font-weight: 900; color: #0f172a; }
+        .success { color: #10b981 !important; font-weight: 900 !important; }
+        .danger { color: #ef4444 !important; font-weight: 900 !important; }
 
-        .summary-item:last-child {
-            border-bottom: none;
-        }
+        /* Contenedores de Tablas */
+        .card { background-color: var(--card-bg); border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+        .table-responsive { max-height: 520px; overflow-y: auto; border-radius: 6px; position: relative; }
 
-        .summary-item .value {
-            font-weight: bold;
-            color: #0f172a;
-        }
-
-        .success { color: #10b981 !important; font-weight: bold; }
-        .danger { color: #ef4444 !important; font-weight: bold; }
-        .neutral { color: #64748b !important; font-weight: bold; }
-
-        .status-badge {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            background-color: #e2f0d9;
-            color: #385723;
-            font-weight: 600;
-            border: 1px solid #c8e6c9;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            padding: 18px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            border: 1px solid var(--border-color);
-            box-sizing: border-box;
-            height: 100%;
-        }
-
-        .table-responsive {
-            max-height: 450px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            position: relative;
-            z-index: 1;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-
+        /* TABLAS - ALTURA REDUCIDA Y DENSIDAD */
+        table { width: 100%; border-collapse: collapse; font-size: 10px; }
+        
         th, td {
-            padding: 9px 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
+            padding: 4px 6px; /* Altura de fila significativamente reducida */
+            text-align: center; 
+            border-bottom: 1px solid #e2e8f0;
             white-space: nowrap;
+            font-weight: 700; 
+            color: #0f172a; 
         }
 
-        /* Tabla Panel 1 */
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            font-size: 9px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        tr:hover { background-color: #e9f2fb; }
+
+        /* Estilo Azul para Encabezado Panel 1 según referencia */
+        #tablaPanel1 th { background-color: var(--primary-color); color: #ffffff; border-bottom: none; }
+        /* Estilo Gris/Claro para Encabezado Panel 2 */
+        #tablaResultados th { background-color: #f1f5f9; color: #1e293b; border-bottom: 2px solid #cbd5e1; }
+
         #tablaPanel1 { table-layout: fixed; width: 100%; }
-        #tablaPanel1 th:nth-child(1) { width: 7%; } 
-        #tablaPanel1 th:nth-child(2) { width: 8%; }  
-        #tablaPanel1 th:nth-child(3) { width: 9%; }  
+        #tablaPanel1 th:nth-child(1) { width: 6%; } 
+        #tablaPanel1 th:nth-child(2) { width: 7%; }  
+        #tablaPanel1 th:nth-child(3) { width: 8%; }  
         #tablaPanel1 th:nth-child(4) { width: 10%; } 
         #tablaPanel1 th:nth-child(5) { width: 4%; }  
-        #tablaPanel1 th:nth-child(6) { width: 7%; }  
-        #tablaPanel1 th:nth-child(7) { width: 11%; } 
-        #tablaPanel1 th:nth-child(8) { width: 28%; } 
-        #tablaPanel1 th:nth-child(9) { width: 8%; }  
-        #tablaPanel1 th:nth-child(10) { width: 8%; } 
-        #tablaPanel1 td { white-space: normal; word-wrap: break-word; }
+        #tablaPanel1 th:nth-child(6) { width: 6%; }  
+        #tablaPanel1 th:nth-child(7) { width: 14%; } 
+        #tablaPanel1 th:nth-child(8) { width: 25%; } /* Columna Observaciones */
+        #tablaPanel1 th:nth-child(9) { width: 10%; }  
+        #tablaPanel1 th:nth-child(10) { width: 10%; } 
 
-        /* Tabla Resultados */
         #tablaResultados { table-layout: fixed; width: 100%; }
-        #tablaResultados th:nth-child(1) { width: 14%; } 
-        #tablaResultados th:nth-child(2) { width: 28%; } 
+        #tablaResultados th:nth-child(1) { width: 12%; } 
+        #tablaResultados th:nth-child(2) { width: 25%; } 
         #tablaResultados th:nth-child(3) { width: 14%; } 
         #tablaResultados th:nth-child(4) { width: 12%; } 
         #tablaResultados th:nth-child(5) { width: 10%; } 
         #tablaResultados th:nth-child(6) { width: 10%; } 
-        #tablaResultados th:nth-child(7) { width: 12%; } 
-        #tablaResultados td { white-space: normal; word-wrap: break-word; }
+        #tablaResultados th:nth-child(7) { width: 17%; } 
 
-        td.obs-col {
+        /* TRUNCAMIENTO DE OBSERVACIONES (Por defecto) */
+        td.obs-col { 
+            font-size: 9px; 
+            color: #0f172a !important; 
+            font-weight: 700 !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        td.proyecto-col, td.resultado-col {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* EXPANSIÓN DINÁMICA (Cuando hay búsqueda activa) */
+        .search-active td.obs-col, 
+        .search-active td.proyecto-col,
+        .search-active td.resultado-col {
             white-space: normal;
-            font-size: 11px;
-            color: #475569;
+            word-wrap: break-word;
         }
 
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-
-        tr:hover { background-color: #f8fafc; }
-
-        .loading {
-            text-align: center;
-            padding: 25px;
-            color: #666;
-            font-size: 13px;
-        }
-
-        .badge-si { background-color: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; display: inline-block; }
-        .badge-no { background-color: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; display: inline-block; }
-        .badge-neutral { background-color: #f1f5f9; color: #334155; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block; }
-
-        .dashboard-separator {
-            margin-top: 40px;
-            margin-bottom: 40px;
-            border-top: 2px dashed #cbd5e1;
-        }
-
-        .dropdown-multiselect { position: relative; background-color: white; border: 1px solid #94a3b8; border-radius: 6px; font-size: 13px; cursor: pointer; user-select: none; width: 100%; box-sizing: border-box; }
-        .dropdown-select-btn { padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; background: white; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1e293b; width: 100%; box-sizing: border-box; font-family: inherit; }
-        .dropdown-content { display: none; position: absolute; background-color: #ffffff; min-width: 260px; box-shadow: 0px 10px 25px rgba(0,0,0,0.25); z-index: 9999; border: 1px solid var(--border-color); border-radius: 6px; max-height: 250px; overflow-y: auto; padding: 8px; left: 0; top: 100%; margin-top: 4px; }
-        .dropdown-content.show { display: block; }
-        .dropdown-actions { display: flex; justify-content: space-between; padding: 4px 4px 8px 4px; border-bottom: 1px solid var(--border-color); margin-bottom: 6px; background: #fff; position: sticky; top: 0; z-index: 10; }
-        .dropdown-actions button { background: none; border: none; color: var(--primary-color); font-size: 12px; font-weight: 600; cursor: pointer; padding: 2px 4px; }
-        .dropdown-item { padding: 6px 8px; display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; color: #334155; }
+        .loading { text-align: center; padding: 25px; color: #0f172a; font-size: 13px; font-weight: 800;}
+        .badge-si { background-color: #dcfce7; color: #166534; padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 9px; display: inline-block; }
+        .badge-no { background-color: #fee2e2; color: #991b1b; padding: 3px 6px; border-radius: 4px; font-weight: 800; font-size: 9px; display: inline-block; }
+        .badge-neutral { background-color: #f1f5f9; color: #0f172a; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; display: inline-block; border: 1px solid #cbd5e1; }
+        .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 4px; background-color: #e2f0d9; color: #385723; font-weight: 800; border: 1px solid #c8e6c9; }
+        .dashboard-separator { margin: 30px 0; border-top: 2px dashed #cbd5e1; }
     </style>
 </head>
 <body>
@@ -459,39 +336,33 @@
 <div class="container">
     <!-- PANEL 1: APERTURAS -->
     <div class="header-flex">
-        <h1>APERTURAS DE TANQUILLAS DE CANTV</h1>
+        <h1>Aperturas de Tanquillas</h1>
         <div class="header-actions">
-            <button id="btnGenerarPDF1" class="btn-pdf" onclick="generarReportePDF1()">📄 Generar Reporte</button>
             <div id="statusBadge" class="status-badge">Conectando...</div>
+            <button id="btnGenerarPDF1" class="btn-pdf" onclick="generarReportePDF1()">📄 Exportar PDF</button>
         </div>
     </div>
 
-    <!-- Filtros Panel 1 -->
-    <div class="filter-card">
-        <div class="filters-header">
-            <span>🔍 Panel de Control y Filtros Operativos</span>
-            <button id="toggleFiltersBtn" class="toggle-btn" onclick="toggleFiltros('filtersPanel', 'toggleFiltersBtn')">-</button>
-        </div>
-        <div class="filters-container" id="filtersPanel">
-            <div class="filter-group">
+    <!-- CINTA DE FILTROS PANEL 1 (Sin KPIs) -->
+    <div class="dashboard-ribbon">
+        <div class="ribbon-section">
+            <div class="filter-control">
                 <label>Buscador N°</label>
-                <input type="text" id="filterSearch" class="filter-search-input" placeholder="Ej: V142050" oninput="aplicarFiltros()">
+                <input type="text" id="filterSearch" placeholder="Buscar... (Expande detalles)" oninput="aplicarFiltros()">
             </div>
-            <div class="filter-group">
-                <label>Fecha Desde</label>
+            <div class="filter-control">
+                <label>Desde</label>
                 <input type="date" id="filterDateFrom" onchange="aplicarFiltros()">
             </div>
-            <div class="filter-group">
-                <label>Fecha Hasta</label>
+            <div class="filter-control">
+                <label>Hasta</label>
                 <input type="date" id="filterDateTo" onchange="aplicarFiltros()">
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Actividad</label>
-                <select id="filterF" onchange="aplicarFiltros()">
-                    <option value="">Todos</option>
-                </select>
+                <select id="filterF" onchange="aplicarFiltros()"><option value="">Todos</option></select>
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Departamento</label>
                 <div class="dropdown-multiselect" id="dropdownDepto">
                     <div class="dropdown-select-btn" onclick="toggleDropdown('dropdownDeptoContent')">
@@ -506,7 +377,7 @@
                     </div>
                 </div>
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Proyecto</label>
                 <div class="dropdown-multiselect" id="dropdownProj">
                     <div class="dropdown-select-btn" onclick="toggleDropdown('dropdownProjContent')">
@@ -524,22 +395,16 @@
         </div>
     </div>
 
-    <!-- Estructura Principal Panel 1: Analítica (30%) y Tabla (70%) -->
-    <div class="panel-split">
-        <div class="analytics-card">
-            <h3>📊 Progreso por Departamento</h3>
-            
-            <!-- Nueva Caja de Total de Aperturas Destacada -->
-            <div class="total-aperturas-box">
-                <span class="total-label">Total Aperturas</span>
-                <span id="totalAperturasDepto" class="total-val">0</span>
-            </div>
-
-            <div id="progressContainerDepto" class="progress-list-container custom-scrollbar">
-                <!-- Se llenará vía JS con barras estilizadas -->
-            </div>
+    <!-- ESTRUCTURA 10/90 PARA PANEL 1 (Barras / Tabla) -->
+    <div class="panel-split-panel1">
+        
+        <!-- Izquierda: Barras de Progreso -->
+        <div class="progress-card" id="progresoDeptosContenedor">
+            <h3 class="progress-header">📊 Progreso por Departamento</h3>
+            <div class="loading" style="font-size:10px;">Calculando...</div>
         </div>
 
+        <!-- Derecha: Tabla -->
         <div class="card" style="margin-bottom: 0;">
             <div class="table-responsive">
                 <table id="tablaPanel1">
@@ -569,62 +434,49 @@
 
     <!-- PANEL 2: RESULTADOS -->
     <div class="header-flex">
-        <h1>RESULTADO DE APERTURAS DE TANQUILLAS DE CANTV</h1>
+        <h1>Resultados de Aperturas</h1>
         <div class="header-actions">
-            <button id="btnGenerarPDF2" class="btn-pdf" onclick="generarReportePDF2()">📄 Generar Reporte</button>
             <div id="statusBadgeResultados" class="status-badge">Conectando...</div>
+            <button id="btnGenerarPDF2" class="btn-pdf" onclick="generarReportePDF2()">📄 Exportar PDF</button>
         </div>
     </div>
 
-    <!-- Filtros Panel 2 -->
-    <div class="filter-card">
-        <div class="filters-header">
-            <span>🔍 Filtros de Resultados</span>
-            <button id="toggleFiltersResBtn" class="toggle-btn" onclick="toggleFiltros('filtersPanelRes', 'toggleFiltersResBtn')">-</button>
-        </div>
-        <div class="filters-container" id="filtersPanelRes">
-            <div class="filter-group">
+    <!-- CINTA DE FILTROS PANEL 2 -->
+    <div class="dashboard-ribbon">
+        <div class="ribbon-section" style="width: 100%;">
+            <div class="filter-control">
                 <label>Abonado</label>
-                <input type="text" id="filterAbonadoRes" class="filter-search-input" placeholder="Buscar abonado..." oninput="aplicarFiltrosResultados()">
+                <input type="text" id="filterAbonadoRes" placeholder="Buscar... (Expande detalles)" oninput="aplicarFiltrosResultados()">
             </div>
-            <div class="filter-group">
-                <label>Enviado Desde</label>
+            <div class="filter-control">
+                <label>Desde</label>
                 <input type="date" id="filterDateFromRes" onchange="aplicarFiltrosResultados()">
             </div>
-            <div class="filter-group">
-                <label>Enviado Hasta</label>
+            <div class="filter-control">
+                <label>Hasta</label>
                 <input type="date" id="filterDateToRes" onchange="aplicarFiltrosResultados()">
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Actividad</label>
-                <select id="filterActividadRes" onchange="aplicarFiltrosResultados()">
-                    <option value="">Todas</option>
-                </select>
+                <select id="filterActividadRes" onchange="aplicarFiltrosResultados()"><option value="">Todas</option></select>
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Aprobación</label>
-                <select id="filterAprobacionRes" onchange="aplicarFiltrosResultados()">
-                    <option value="">Todas</option>
-                </select>
+                <select id="filterAprobacionRes" onchange="aplicarFiltrosResultados()"><option value="">Todas</option></select>
             </div>
-            <div class="filter-group">
+            <div class="filter-control">
                 <label>Resultado</label>
-                <select id="filterResultadoRes" onchange="aplicarFiltrosResultados()">
-                    <option value="">Todos</option>
-                </select>
+                <select id="filterResultadoRes" onchange="aplicarFiltrosResultados()"><option value="">Todos</option></select>
             </div>
         </div>
     </div>
 
-    <!-- Estructura Principal Panel 2: Analítica Tabular (30%) y Tabla (70%) -->
+    <!-- ESTRUCTURA 30/70 PARA PANEL 2 -->
     <div class="panel-split">
         <div class="analytics-card" style="overflow-y: auto;">
-            <h3>📈 Resumen de Solicitudes</h3>
-            <span id="dateSubtitlePanel2" style="font-size:11px; color:#64748b; margin-bottom:15px; display:block;">(Histórico completo)</span>
-            
-            <div id="resumenResultadosText" style="display: flex; flex-direction: column; gap: 5px;">
-                <!-- Tablas de resumen generadas por JS -->
-            </div>
+            <h3 style="display: flex; align-items: center; gap: 8px;">📈 Resumen de Solicitudes</h3>
+            <span id="dateSubtitlePanel2" style="font-size:10px; color:#64748b; margin-bottom:12px; display:block;">(Histórico completo)</span>
+            <div id="resumenResultadosText" style="display: flex; flex-direction: column;"></div>
         </div>
 
         <div class="card" style="margin-bottom: 0;">
@@ -652,14 +504,16 @@
 </div>
 
 <script>
-    // Funciones Utilitarias Comunes
-    function toggleFiltros(panelId, btnId) {
-        const panel = document.getElementById(panelId);
-        const btn = document.getElementById(btnId);
-        panel.classList.toggle('collapsed');
-        btn.innerText = panel.classList.contains('collapsed') ? "+" : "-";
-    }
+    // Variables Globales e Indicadores de Sincronización
+    let globalData = [];
+    let registrosVisibles = []; 
+    let globalResultados = []; 
+    let registrosVisiblesRes = [];
+    let mapaEstados = {}; 
+    let datosPanel1Listos = false;
+    let datosResultadosListos = false;
 
+    // Utilidades
     function toggleDropdown(contentId) {
         const content = document.getElementById(contentId);
         document.querySelectorAll('.dropdown-content').forEach(el => {
@@ -674,7 +528,7 @@
     }
 
     window.onclick = function(event) {
-        if (!event.target.closest('.dropdown-multiselect') && !event.target.closest('.dropdown-actions')) {
+        if (!event.target.closest('.dropdown-multiselect')) {
             document.querySelectorAll('.dropdown-content').forEach(el => el.classList.remove('show'));
         }
     }
@@ -694,17 +548,7 @@
         return "";
     }
 
-    function formatDateForSubtitle(dateStr) {
-        if(!dateStr) return "";
-        const parts = dateStr.split('-');
-        if(parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        return dateStr;
-    }
-
-    // --- LOGICA PANEL 1 ---
-    let globalData = [];
-    let registrosVisibles = []; 
-
+    // --- LÓGICA PANEL 1 ---
     function cargarDatosPanel1() {
         const sheetId = '1xQfFyNb0zihdNq8luRxhDFe2WNVCTGzI2_wDuAEAL-o';
         const sheetName = 'BD-Abonados 13-02-2025'; 
@@ -718,20 +562,6 @@
     function procesarDatosPanel1Gviz(data) {
         if (data && data.table && data.table.rows) {
             globalData = [];
-            let indexAprob = -1, indexRes = -1;
-            if (data.table.rows.length > 0) {
-                const headCells = data.table.rows[0].c;
-                if(headCells) {
-                    headCells.forEach((c, i) => {
-                        if(c && c.v) {
-                            let val = String(c.v).toUpperCase();
-                            if(val.includes("APROBACI")) indexAprob = i;
-                            if(val.includes("RESULTADO")) indexRes = i;
-                        }
-                    });
-                }
-            }
-
             const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             data.table.rows.forEach((row, index) => {
                 if (index === 0) return; 
@@ -740,14 +570,11 @@
 
                 let obj = {};
                 for(let i = 0; i < 26; i++) obj[letters[i]] = formatGvizValue(cells, i);
-
-                obj["APROBACION"] = indexAprob !== -1 ? formatGvizValue(cells, indexAprob) : (obj["P"] || "");
-                obj["RESULTADO"] = indexRes !== -1 ? formatGvizValue(cells, indexRes) : (obj["Q"] || "");
-
                 globalData.push(obj);
             });
 
             popularFiltrosPanel1();
+            datosPanel1Listos = true;
             aplicarFiltros();
         }
     }
@@ -780,15 +607,21 @@
         const valDateTo = document.getElementById('filterDateTo').value;
         const valF = document.getElementById('filterF').value;
 
+        // Gestión de clase dinámica para expandir observaciones si hay búsqueda
+        const tablaEl = document.getElementById('tablaPanel1');
+        if (valSearch !== "") {
+            tablaEl.classList.add('search-active');
+        } else {
+            tablaEl.classList.remove('search-active');
+        }
+
         const deptosSeleccionados = Array.from(document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]:checked')).map(cb => cb.value);
         const totalDeptos = document.querySelectorAll('#dropdownDeptoContent input[type="checkbox"]').length;
-        const deptoText = document.getElementById('deptoBtnText');
-        deptoText.innerText = (deptosSeleccionados.length === totalDeptos) ? "Todos" : `${deptosSeleccionados.length} seleccionados`;
+        document.getElementById('deptoBtnText').innerText = (deptosSeleccionados.length === totalDeptos) ? "Todos" : `${deptosSeleccionados.length} seleccionados`;
 
         const proyectosSeleccionados = Array.from(document.querySelectorAll('#dropdownProjContent input[type="checkbox"]:checked')).map(cb => cb.value);
         const totalProyectos = document.querySelectorAll('#dropdownProjContent input[type="checkbox"]').length;
-        const projText = document.getElementById('projBtnText');
-        projText.innerText = (proyectosSeleccionados.length === totalProyectos) ? "Todos" : `${proyectosSeleccionados.length} seleccionados`;
+        document.getElementById('projBtnText').innerText = (proyectosSeleccionados.length === totalProyectos) ? "Todos" : `${proyectosSeleccionados.length} seleccionados`;
 
         let timeFrom = valDateFrom ? new Date(valDateFrom + "T00:00:00").getTime() : null;
         let timeTo = valDateTo ? new Date(valDateTo + "T23:59:59").getTime() : null;
@@ -812,6 +645,12 @@
             return matchSearch && matchDate && matchF && matchG && matchO;
         });
 
+        registrosFiltrados.sort((a, b) => {
+            const timeA = parseSheetDate(a["D"]) || 0;
+            const timeB = parseSheetDate(b["D"]) || 0;
+            return timeB - timeA; 
+        });
+
         registrosVisibles = registrosFiltrados;
         
         const tbody = document.getElementById('tableBody');
@@ -819,71 +658,77 @@
             tbody.innerHTML = `<tr><td colspan="10" class="loading">No se encontraron registros.</td></tr>`;
         } else {
             tbody.innerHTML = registrosFiltrados.map(row => {
-                const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#e11d48; font-weight:bold;">Sin Departamento</span>';
+                const numAbonado = (row["C"] || "").toUpperCase().trim();
+                const estadoActualizado = mapaEstados[numAbonado];
+
+                const deptoDisplay = (row["G"] && row["G"].trim() !== "") ? row["G"] : '<span style="color:#ef4444;">Sin Departamento</span>';
                 const planillaTxt = (row["I"] || "").trim().toUpperCase();
                 let planillaBadge = planillaTxt;
                 if (planillaTxt === "SI" || planillaTxt === "SÍ") planillaBadge = `<span class="badge-si">SI</span>`;
                 else if (planillaTxt === "NO") planillaBadge = `<span class="badge-no">NO</span>`;
 
+                const valAprobacion = estadoActualizado ? estadoActualizado.aprobacion : "";
+                const valResultado = estadoActualizado ? estadoActualizado.resultado : "";
+                row["APROBACION_MERGED"] = valAprobacion;
+                row["RESULTADO_MERGED"] = valResultado;
+
                 return `<tr>
-                    <td><b>${row["C"] || ''}</b></td><td>${row["D"] || ''}</td><td>${row["F"] || ''}</td>
-                    <td>${deptoDisplay}</td><td>${row["H"] || ''}</td><td style="text-align: center;">${planillaBadge}</td>
-                    <td>${row["O"] || ''}</td><td class="obs-col">${row["N"] || ''}</td>
-                    <td><b>${row["APROBACION"] || ''}</b></td><td><b>${row["RESULTADO"] || ''}</b></td>
+                    <td>${row["C"] || ''}</td>
+                    <td>${row["D"] || ''}</td>
+                    <td>${row["F"] || ''}</td>
+                    <td>${deptoDisplay}</td>
+                    <td>${row["H"] || ''}</td>
+                    <td>${planillaBadge}</td>
+                    <td class="proyecto-col">${row["O"] || ''}</td>
+                    <td class="obs-col" title="${(row["N"] || '').replace(/"/g, '&quot;')}">${row["N"] || ''}</td>
+                    <td>${valAprobacion}</td>
+                    <td class="resultado-col">${valResultado}</td>
                 </tr>`;
             }).join('');
         }
         document.getElementById('statusBadge').innerText = `Sincronizado (${registrosFiltrados.length} regs)`;
-        generarBarrasDepto(registrosFiltrados);
+        actualizarMetricasPanel1(registrosFiltrados);
     }
 
-    function generarBarrasDepto(registros) {
-        let deptCounts = {};
+    function actualizarMetricasPanel1(registros) {
+        let deptoCounts = {};
         registros.forEach(row => {
-            let depto = (row["G"] && row["G"].trim() !== "") ? row["G"].trim() : "Sin Departamento";
-            deptCounts[depto] = (deptCounts[depto] || 0) + 1;
+            let depto = (row["G"] && row["G"].trim() !== "") ? row["G"].trim().toUpperCase() : "SIN DEPARTAMENTO";
+            deptoCounts[depto] = (deptoCounts[depto] || 0) + 1;
         });
 
-        const total = registros.length;
-        // Actualizamos el número principal
-        document.getElementById('totalAperturasDepto').innerText = total;
-
-        const container = document.getElementById('progressContainerDepto');
-        let sortedDepts = Object.entries(deptCounts).sort((a, b) => b[1] - a[1]);
+        let total = registros.length;
         
-        if (total === 0) {
-            container.innerHTML = '<span style="color:#64748b; font-size:13px; text-align:center; display:block; margin-top:10px;">Sin datos para mostrar</span>';
-            return;
-        }
+        let deptoArr = Object.keys(deptoCounts).map(k => ({ nombre: k, count: deptoCounts[k] }));
+        deptoArr.sort((a, b) => b.count - a.count);
 
-        let html = '';
-        sortedDepts.forEach((item, index) => {
-            const deptoName = item[0];
-            const count = item[1];
-            const pct = Math.round((count / total) * 100);
-            
+        let html = `
+            <h3 class="progress-header">📊 Progreso por Departamento</h3>
+            <div class="total-block">
+                <span class="total-block-title">Total Aperturas</span>
+                <span class="total-block-val">${total}</span>
+            </div>
+        `;
+
+        deptoArr.forEach((item, index) => {
+            let pct = total > 0 ? Math.round((item.count / total) * 100) : 0;
             html += `
-            <div class="progress-item">
-                <div class="progress-label-container">
-                    <span class="depto-name" title="${deptoName}">${index + 1}. ${deptoName}</span>
-                    <div class="depto-stats">
-                        <span class="qty">${count}</span>
-                        <span class="pct">(${pct}%)</span>
+                <div class="bar-container">
+                    <div class="bar-labels">
+                        <span>${index + 1}. ${item.nombre}</span>
+                        <span>${item.count} <span style="color:#94a3b8; font-weight:normal;">(${pct}%)</span></span>
+                    </div>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width: ${pct}%;"></div>
                     </div>
                 </div>
-                <div class="progress-track">
-                    <div class="progress-fill" style="width: ${pct}%;"></div>
-                </div>
-            </div>`;
+            `;
         });
-        container.innerHTML = html;
+
+        document.getElementById('progresoDeptosContenedor').innerHTML = html;
     }
 
-
-    // --- LOGICA PANEL 2 RESULTADOS ---
-    let globalResultados = []; 
-    let registrosVisiblesRes = [];
-
+    // --- LÓGICA PANEL 2 RESULTADOS ---
     function cargarDatosResultados() {
         const sheetId = '1xQfFyNb0zihdNq8luRxhDFe2WNVCTGzI2_wDuAEAL-o';
         const gid = '1722068544'; 
@@ -897,13 +742,15 @@
     function procesarDatosResultadosGviz(data) {
         if (data && data.table && data.table.rows) {
             globalResultados = [];
+            mapaEstados = {}; 
+
             data.table.rows.forEach((row, index) => {
                 const cells = row.c;
                 if(!cells) return;
                 const abonado = formatGvizValue(cells, 2); 
                 if (index === 0 && abonado.toLowerCase().includes('abonado')) return;
 
-                globalResultados.push({
+                const itemData = {
                     proyecto: formatGvizValue(cells, 1),
                     abonado: abonado,
                     actividad: formatGvizValue(cells, 3),
@@ -911,11 +758,25 @@
                     aprobacion: formatGvizValue(cells, 5),
                     resultado: formatGvizValue(cells, 6),
                     obs: formatGvizValue(cells, 10)
-                });
+                };
+
+                globalResultados.push(itemData);
+
+                if (abonado) {
+                    mapaEstados[abonado.toUpperCase().trim()] = {
+                        aprobacion: itemData.aprobacion,
+                        resultado: itemData.resultado
+                    };
+                }
             });
 
             popularFiltrosResultados();
             aplicarFiltrosResultados();
+
+            datosResultadosListos = true;
+            if (datosPanel1Listos) {
+                aplicarFiltros();
+            }
         }
     }
 
@@ -937,11 +798,13 @@
         const selAprobacion = document.getElementById('filterAprobacionRes').value;
         const selResultado = document.getElementById('filterResultadoRes').value;
 
-        const subt = document.getElementById('dateSubtitlePanel2');
-        if (dateFrom && dateTo) subt.innerText = `(Del ${formatDateForSubtitle(dateFrom)} al ${formatDateForSubtitle(dateTo)})`;
-        else if (dateFrom) subt.innerText = `(Desde el ${formatDateForSubtitle(dateFrom)})`;
-        else if (dateTo) subt.innerText = `(Hasta el ${formatDateForSubtitle(dateTo)})`;
-        else subt.innerText = "(Historico completo)";
+        // Gestión de clase dinámica para Panel 2
+        const tablaResEl = document.getElementById('tablaResultados');
+        if (txtAbonado !== "") {
+            tablaResEl.classList.add('search-active');
+        } else {
+            tablaResEl.classList.remove('search-active');
+        }
 
         let timeFrom = dateFrom ? new Date(dateFrom + "T00:00:00").getTime() : null;
         let timeTo = dateTo ? new Date(dateTo + "T23:59:59").getTime() : null;
@@ -962,6 +825,12 @@
             return matchAbonado && matchDate && matchActividad && matchAprobacion && matchResultado;
         });
 
+        registrosFiltrados.sort((a, b) => {
+            const timeA = parseSheetDate(a.fecha) || 0;
+            const timeB = parseSheetDate(b.fecha) || 0;
+            return timeB - timeA;
+        });
+
         registrosVisiblesRes = registrosFiltrados;
 
         const tbody = document.getElementById('tableBodyResultados');
@@ -980,15 +849,32 @@
                 else if (item.resultado.toUpperCase() === 'FRACASO') bRes = `<span class="badge-no">${item.resultado}</span>`;
                 else if (item.resultado !== '' && item.resultado.toUpperCase() !== 'N/A') bRes = `<span class="badge-neutral">${item.resultado}</span>`;
 
-                html += `<tr><td><b>${item.abonado}</b></td><td>${item.proyecto}</td><td>${item.actividad}</td>
-                    <td>${item.fecha}</td><td style="text-align: center;">${bAprob}</td><td style="text-align: center;">${bRes}</td>
-                    <td class="obs-col">${item.obs}</td></tr>`;
+                html += `<tr>
+                    <td>${item.abonado}</td>
+                    <td class="proyecto-col">${item.proyecto}</td>
+                    <td>${item.actividad}</td>
+                    <td>${item.fecha}</td>
+                    <td>${bAprob}</td>
+                    <td>${bRes}</td>
+                    <td class="obs-col" title="${item.obs.replace(/"/g, '&quot;')}">${item.obs}</td>
+                </tr>`;
             });
             tbody.innerHTML = html;
         }
 
         document.getElementById('statusBadgeResultados').innerText = `Sincronizado (${registrosFiltrados.length} regs)`;
         generarResumenResultadosText(registrosFiltrados);
+        
+        const subt = document.getElementById('dateSubtitlePanel2');
+        if (dateFrom && dateTo) subt.innerText = `(Del ${formatDateForSubtitle(dateFrom)} al ${formatDateForSubtitle(dateTo)})`;
+        else if (dateFrom) subt.innerText = `(Desde el ${formatDateForSubtitle(dateFrom)})`;
+        else if (dateTo) subt.innerText = `(Hasta el ${formatDateForSubtitle(dateTo)})`;
+        else subt.innerText = "(Historico completo)";
+    }
+
+    function formatDateForSubtitle(dateString) {
+        const d = new Date(dateString + "T00:00:00");
+        return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
 
     function generarResumenResultadosText(registros) {
@@ -1031,174 +917,54 @@
                 <div class="summary-item"><span>Total Enviadas</span><span class="value">${registros.length}</span></div>
                 <div class="summary-item"><span>Aprobadas</span><span class="value success">${totAprobadas}</span></div>
                 <div class="summary-item"><span>Rechazadas</span><span class="value danger">${totRechazadas}</span></div>
-                <div class="summary-item"><span>Sin respuesta</span><span class="value neutral">${totSinResp}</span></div>
+                <div class="summary-item"><span>Sin respuesta</span><span class="value">${totSinResp}</span></div>
             </div>
 
             <div class="summary-card-group">
                 <div class="summary-card-header">Rendimiento (Éxito / Fracaso)</div>
-                <div class="summary-item" style="background-color: #f1f5f9; padding: 6px; border-radius: 4px; border: 1px solid #e2e8f0;">
+                <div class="summary-item" style="background-color: #f1f5f9; padding: 6px; border-radius: 4px; border: 1px solid #e2e8f0; margin-bottom:4px;">
                     <span>Total General</span>
-                    <span class="value"><span class="success">${totExito}</span> / <span class="danger">${totFracaso}</span></span>
+                    <span class="value"><span class="success">${totExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${totFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Mantenimientos</span>
-                    <span class="value"><span class="success">${mantExito}</span> / <span class="danger">${mantFracaso}</span></span>
+                    <span class="value"><span class="success">${mantExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${mantFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Instalaciones</span>
-                    <span class="value"><span class="success">${instExito}</span> / <span class="danger">${instFracaso}</span></span>
+                    <span class="value"><span class="success">${instExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${instFracaso}</span></span>
                 </div>
                 <div class="summary-item">
                     <span>Verticales</span>
-                    <span class="value"><span class="success">${vertExito}</span> / <span class="danger">${vertFracaso}</span></span>
+                    <span class="value"><span class="success">${vertExito}</span> <span style="color:#cbd5e1;">/</span> <span class="danger">${vertFracaso}</span></span>
                 </div>
             </div>
         `;
     }
 
+    // Funciones PDF
     function generarReportePDF1() {
-        if (!registrosVisibles || registrosVisibles.length === 0) {
-            alert("No hay registros en la vista para generar el reporte.");
-            return;
-        }
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
-
-        doc.setFontSize(16);
-        doc.setTextColor(26, 115, 232);
-        doc.text("APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
-
-        doc.setFontSize(9);
-        doc.setTextColor(100, 116, 139);
-        const hoy = new Date().toLocaleDateString('es-ES', { 
-            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-        });
-        const total = registrosVisibles.length;
-
-        doc.text(`Generado el: ${hoy} | Total Registros: ${total}`, 40, 58);
-
-        const tableBody = registrosVisibles.map(row => [
-            row["C"] || "",
-            row["D"] || "",
-            row["F"] || "",
-            (row["G"] && row["G"].trim() !== "") ? row["G"] : "Sin Depto",
-            row["H"] || "",
-            (row["I"] || "").toUpperCase(),
-            row["O"] || "",
-            row["N"] || "",
-            row["APROBACION"] || "",
-            row["RESULTADO"] || ""
-        ]);
-
-        doc.autoTable({
-            startY: 70,
-            head: [['N°', 'FECHA', 'ACTIVIDAD', 'DEPTO', 'SLA', 'PLANILLA', 'PROYECTO', 'OBSERVACIONES', 'APROB.', 'RESULTADO']],
-            body: tableBody,
-            theme: 'striped',
-            styles: {
-                fontSize: 7.5,
-                cellPadding: 4,
-                overflow: 'linebreak',
-                valign: 'middle'
-            },
-            headStyles: {
-                fillColor: [26, 115, 232],
-                textColor: 255,
-                fontStyle: 'bold',
-                halign: 'left'
-            },
-            columnStyles: {
-                0: { cellWidth: 50, fontStyle: 'bold' },
-                1: { cellWidth: 55 },
-                2: { cellWidth: 75 },
-                3: { cellWidth: 80 },
-                4: { cellWidth: 40 },
-                5: { cellWidth: 50, halign: 'center' },
-                6: { cellWidth: 75 },
-                7: { cellWidth: 180 }, 
-                8: { cellWidth: 65, fontStyle: 'bold' },
-                9: { cellWidth: 65, fontStyle: 'bold' }
-            },
-            margin: { left: 40, right: 40 },
-            didDrawPage: function(data) {
-                const str = `Página ${doc.internal.getNumberOfPages()}`;
-                doc.setFontSize(8);
-                doc.setTextColor(150);
-                doc.text(str, doc.internal.pageSize.width - 40 - doc.getTextWidth(str), doc.internal.pageSize.height - 20);
-            }
-        });
-
+        if (!registrosVisibles || registrosVisibles.length === 0) { alert("No hay registros."); return; }
+        const { jsPDF } = window.jspdf; const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+        doc.setFontSize(16); doc.setTextColor(26, 115, 232); doc.text("APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
+        doc.setFontSize(9); doc.setTextColor(100, 116, 139);
+        const hoy = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        doc.text(`Generado el: ${hoy} | Total Registros: ${registrosVisibles.length}`, 40, 58);
+        const tableBody = registrosVisibles.map(row => [row["C"] || "", row["D"] || "", row["F"] || "", (row["G"] && row["G"].trim() !== "") ? row["G"] : "Sin Depto", row["H"] || "", (row["I"] || "").toUpperCase(), row["O"] || "", row["N"] || "", row["APROBACION_MERGED"] || "", row["RESULTADO_MERGED"] || ""]);
+        doc.autoTable({ startY: 70, head: [['N°', 'FECHA', 'ACTIVIDAD', 'DEPTO', 'SLA', 'PLANILLA', 'PROYECTO', 'OBSERVACIONES', 'APROB.', 'RESULTADO']], body: tableBody, theme: 'striped', styles: { fontSize: 7.5, cellPadding: 4, overflow: 'linebreak', valign: 'middle', halign: 'center' }, headStyles: { fillColor: [26, 115, 232], textColor: 255, fontStyle: 'bold', halign: 'center' }, columnStyles: { 0: { cellWidth: 50, fontStyle: 'bold' }, 1: { cellWidth: 55 }, 2: { cellWidth: 75 }, 3: { cellWidth: 80 }, 4: { cellWidth: 40 }, 5: { cellWidth: 50 }, 6: { cellWidth: 75 }, 7: { cellWidth: 180 }, 8: { cellWidth: 65, fontStyle: 'bold' }, 9: { cellWidth: 65, fontStyle: 'bold' } }, margin: { left: 40, right: 40 }, didDrawPage: function(data) { doc.setFontSize(8); doc.setTextColor(150); doc.text(`Página ${doc.internal.getNumberOfPages()}`, doc.internal.pageSize.width - 40 - doc.getTextWidth(`Página ${doc.internal.getNumberOfPages()}`), doc.internal.pageSize.height - 20); } });
         doc.save(`Reporte_Panel1_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 
     function generarReportePDF2() {
-        if (!registrosVisiblesRes || registrosVisiblesRes.length === 0) {
-            alert("No hay registros en la vista para generar el reporte de Resultados.");
-            return;
-        }
-
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
-
-        doc.setFontSize(16);
-        doc.setTextColor(26, 115, 232);
-        doc.text("RESULTADOS DE APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
-
-        doc.setFontSize(9);
-        doc.setTextColor(100, 116, 139);
-        const hoy = new Date().toLocaleDateString('es-ES', { 
-            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
-        });
-        
+        if (!registrosVisiblesRes || registrosVisiblesRes.length === 0) { alert("No hay registros."); return; }
+        const { jsPDF } = window.jspdf; const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+        doc.setFontSize(16); doc.setTextColor(26, 115, 232); doc.text("RESULTADOS DE APERTURAS DE TANQUILLAS DE CANTV", 40, 42);
+        doc.setFontSize(9); doc.setTextColor(100, 116, 139);
+        const hoy = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         const subt = document.getElementById('dateSubtitlePanel2').innerText;
         doc.text(`Generado el: ${hoy} | Periodo: ${subt} | Registros mostrados: ${registrosVisiblesRes.length}`, 40, 58);
-
-        const tableBody = registrosVisiblesRes.map(item => [
-            item.abonado,
-            item.proyecto,
-            item.actividad,
-            item.fecha,
-            item.aprobacion,
-            item.resultado,
-            item.obs
-        ]);
-
-        doc.autoTable({
-            startY: 70,
-            head: [['ABONADO', 'PROYECTO', 'ACTIVIDAD', 'FECHA DE ENVÍO', 'APROB.', 'RESULTADO', 'OBSERVACIONES']],
-            body: tableBody,
-            theme: 'striped',
-            styles: {
-                fontSize: 8,
-                cellPadding: 5,
-                overflow: 'linebreak',
-                valign: 'middle'
-            },
-            headStyles: {
-                fillColor: [26, 115, 232],
-                textColor: 255,
-                fontStyle: 'bold',
-                halign: 'left'
-            },
-            columnStyles: {
-                0: { cellWidth: 70, fontStyle: 'bold' },
-                1: { cellWidth: 150 },
-                2: { cellWidth: 100 },
-                3: { cellWidth: 70 },
-                4: { cellWidth: 70, halign: 'center' },
-                5: { cellWidth: 70, halign: 'center' },
-                6: { cellWidth: 'auto' }
-            },
-            margin: { left: 40, right: 40 },
-            didDrawPage: function(data) {
-                const str = `Página ${doc.internal.getNumberOfPages()}`;
-                doc.setFontSize(8);
-                doc.setTextColor(150);
-                doc.text(str, doc.internal.pageSize.width - 40 - doc.getTextWidth(str), doc.internal.pageSize.height - 20);
-            }
-        });
-
+        const tableBody = registrosVisiblesRes.map(item => [item.abonado, item.proyecto, item.actividad, item.fecha, item.aprobacion, item.resultado, item.obs]);
+        doc.autoTable({ startY: 70, head: [['ABONADO', 'PROYECTO', 'ACTIVIDAD', 'FECHA DE ENVÍO', 'APROB.', 'RESULTADO', 'OBSERVACIONES']], body: tableBody, theme: 'striped', styles: { fontSize: 8, cellPadding: 5, overflow: 'linebreak', valign: 'middle', halign: 'center' }, headStyles: { fillColor: [26, 115, 232], textColor: 255, fontStyle: 'bold', halign: 'center' }, columnStyles: { 0: { cellWidth: 70, fontStyle: 'bold' }, 1: { cellWidth: 150 }, 2: { cellWidth: 100 }, 3: { cellWidth: 70 }, 4: { cellWidth: 70 }, 5: { cellWidth: 70 }, 6: { cellWidth: 'auto' } }, margin: { left: 40, right: 40 }, didDrawPage: function(data) { doc.setFontSize(8); doc.setTextColor(150); doc.text(`Página ${doc.internal.getNumberOfPages()}`, doc.internal.pageSize.width - 40 - doc.getTextWidth(`Página ${doc.internal.getNumberOfPages()}`), doc.internal.pageSize.height - 20); } });
         doc.save(`Reporte_Resultados_CANTV_${new Date().toISOString().slice(0,10)}.pdf`);
     }
 
